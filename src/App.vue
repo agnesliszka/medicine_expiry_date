@@ -7,7 +7,7 @@
            <input class="input-box" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
            <input class="input-box" v-model="inputExpiryDateField" v-on:keyup.enter="addMedicine" placeholder="Input expiry date" />
            <button @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
-           <button @click="showExpiredMedicine"class="btn btn-secondary">Show Expired Medicine</button>
+           <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
       
@@ -15,16 +15,11 @@
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList">
+                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
                       <div class="row align-items-center">
-                        <div v-bind:class="{ expired: isExpired }" > {{ medicine.date }} </div>
-                        <input type="checkbox" v-on:change="toggle(medicine)" v-bind:checked="medicine.complete" class="col-sm-1 border border-danger">
-                        <div v-if="medicine.complete" class="col-md-6">
-                           <div>{{ medicine.name }} </div>                            
-                        </div>
-                        <div v-if="!medicine.complete" class="col-md-6">
-                           <div>{{ medicine.name }} </div> 
-                        </div>
+                        <div> {{ medicine.date }} </div>
+                        <input type="checkbox" v-on:change="toggle(medicine)" v-bind:checked="medicine.complete" class="col-sm-1 border border-danger"> 
+                           <div class="col-md-6">{{ medicine.name }} </div>                                   
                         <span @click="deleteMedicine(medicine)" class="offset-sm-1 col-sm-2 delete text-right">X</span>
                       </div>
                    </li>
@@ -37,10 +32,10 @@
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
                   <div v-if="isActive">
-                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-if="medicine.complete">
-                      <div class="row align-items-center">
+                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
+                      <div class="row align-items-center" v-if="medicine.isExpired">
                            <div>{{ medicine.name }} </div> 
-                           <div>{{ medicine.date }} </div> 
+                           <div v-bind:class="{ expired: isExpired }">{{ medicine.date }} </div> 
                       </div>
                    </li>
                    </div>
@@ -48,6 +43,9 @@
              </div>
           </div>
        </section>
+       <!-- <div v-if="!medicine.complete" class="col-md-6">
+         <div>{{ medicine.name }} </div> 
+      </div> -->
        
     </div>
   </div>
@@ -65,21 +63,28 @@ export default {
   components: {
      'medicine-cart': MedicineCart
  },
-  
+
   data () {
     return {
       inputMedicineField: '',
       inputExpiryDateField: '',
       medicine: "",
+      expiryDate: {type: date},
       medicineList: [],
       isActive: false,
     }
   },
   methods: {
-    addMedicine: function(medicine, expiryDateField) {
+    addMedicine: function(medicine, expiryDate) {
       medicine = this.inputMedicineField;
-      expiryDateField = this.inputExpiryDateField;
-      this.medicineList.push({name: medicine, complete: false, date: expiryDateField, isExpired: false});
+      console.log("medicine"+medicine);
+      expiryDate = this.inputExpiryDateField;
+      console.log("expiryDateField"+expiryDate);
+      this.medicineList.push({name: medicine, complete: false, date: expiryDate, isExpired: false});
+      console.log("name"+name)
+      console.log("complete"+complete)
+      console.log("date"+date)
+      console.log("isExpired"+isExpired)
       this.inputMedicineField = '';
       this.inputExpiryDateField = '';
    },
@@ -90,6 +95,7 @@ export default {
    },
    toggle: function(medicine) {
       medicine.complete = !medicine.complete;
+      console.log("medicine.complete"+medicine.complete)
    },
    isExpired: function(medicine) {
       const today = new Date();
@@ -160,7 +166,7 @@ li {
 }
 
 .expired {
-  color: red;
+  background-color: red;
 }
 
 .btn-secondary {
