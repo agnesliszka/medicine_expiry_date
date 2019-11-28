@@ -4,13 +4,12 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-           <input class="input-box" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
-           <input class="input-box" v-model="inputExpiryDateField" v-on:keyup.enter="addMedicine" placeholder="Input expiry date" />
+           <input type="text" class="input-box" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
+           <input type="date" class="input-box" v-model="inputExpiryDateField" v-on:keyup.enter="addMedicine" placeholder="Input expiry date" />
            <button @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
-      
        <section class="container">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
@@ -18,7 +17,6 @@
                    <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
                       <div class="row align-items-center">
                         <div> {{ medicine.date }} </div>
-                        <input type="checkbox" v-on:change="toggle(medicine)" v-bind:checked="medicine.complete" class="col-sm-1 border border-danger"> 
                            <div class="col-md-6">{{ medicine.name }} </div>                                   
                         <span @click="deleteMedicine(medicine)" class="offset-sm-1 col-sm-2 delete text-right">X</span>
                       </div>
@@ -42,11 +40,7 @@
                 </ul>
              </div>
           </div>
-       </section>
-       <!-- <div v-if="!medicine.complete" class="col-md-6">
-         <div>{{ medicine.name }} </div> 
-      </div> -->
-       
+       </section>      
     </div>
   </div>
 </template>
@@ -69,7 +63,7 @@ export default {
       inputMedicineField: '',
       inputExpiryDateField: '',
       medicine: "",
-      expiryDate: {type: date},
+      expiryDate: "",
       medicineList: [],
       isActive: false,
     }
@@ -80,9 +74,8 @@ export default {
       console.log("medicine"+medicine);
       expiryDate = this.inputExpiryDateField;
       console.log("expiryDateField"+expiryDate);
-      this.medicineList.push({name: medicine, complete: false, date: expiryDate, isExpired: false});
+      this.medicineList.push({name: medicine, date: expiryDate, isExpired: false});
       console.log("name"+name)
-      console.log("complete"+complete)
       console.log("date"+date)
       console.log("isExpired"+isExpired)
       this.inputMedicineField = '';
