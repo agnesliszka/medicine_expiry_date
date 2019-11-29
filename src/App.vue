@@ -4,7 +4,7 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-           <input type="text" class="input-box" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
+           <input type="text" class="input-box" @input="v.inputMedicineField.$touch()" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
            <input type="date" class="input-box" v-model="inputExpiryDateField" v-on:keyup.enter="addMedicine" placeholder="Input expiry date" />
            <button @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
@@ -25,6 +25,7 @@
              </div>
           </div>
        </section>
+       <!-- <p v-if="v.inputMedicineField.required">This field cannot be empty. Please provide a valid medicine name.</p> -->
        <section class="container">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
@@ -51,6 +52,7 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import MedicineCart from './components/MedicineCart.vue';
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   name: 'app',
@@ -67,6 +69,11 @@ export default {
       medicineList: [],
       isActive: false,
     }
+  },
+  validations: {
+     inputMedicineField: {
+        required
+     }
   },
   methods: {
     addMedicine: function(medicine, expiryDate) {
