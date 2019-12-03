@@ -52,7 +52,7 @@
                   <div v-if="isActive">
                   <h1>Expired medicine:</h1>
                    <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
-                      <div class="row justify-content-space-between" v-if="medicine.isExpired">
+                      <div class="expired" v-if="medicine.isExpired">
                            <div>{{ medicine.name }} </div> 
                            <div v-bind:class="{ expired: isExpired }">{{ medicine.date }} </div> 
                       </div>
@@ -189,10 +189,6 @@ li {
    color: #999999;
 }
 
-.expired {
-  background-color: red;
-}
-
 .btn-secondary {
   margin-left: 10px;
 }
@@ -200,6 +196,11 @@ li {
 .validation {
    color: white;
    text-align: left;
+}
+
+.expired {
+   display: flex;
+   justify-content: space-around;
 }
 
 </style>
