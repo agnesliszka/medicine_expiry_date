@@ -102,13 +102,8 @@ export default {
   methods: {
     addMedicine: function(medicine, expiryDate) {
       medicine = this.inputMedicineField;
-      console.log("medicine"+medicine);
       expiryDate = this.inputExpiryDateField;
-      console.log("expiryDateField"+expiryDate);
       this.medicineList.push({name: medicine, date: expiryDate, isExpired: true});
-      console.log("name"+name)
-      console.log("date"+date)
-      console.log("isExpired"+isExpired)
       this.inputMedicineField = '';
       this.inputExpiryDateField = '';
    },
