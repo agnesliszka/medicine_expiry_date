@@ -4,12 +4,32 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-           <input type="text" class="input-box" @input="v.inputMedicineField.$touch()" v-model="inputMedicineField" v-on:keyup.enter="addMedicine" placeholder="Input a medicine" />
-           <input type="date" class="input-box" v-model="inputExpiryDateField" v-on:keyup.enter="addMedicine" placeholder="Input expiry date" />
+            <div>
+               <input 
+                  type="text" 
+                  class="input-box" 
+                  @input="$v.inputMedicineField.$touch()" 
+                  v-model="inputMedicineField" 
+                  v-on:keyup.enter="addMedicine" 
+                  placeholder="Input a medicine" />
+                  <p class="validation" v-if="!$v.inputMedicineField.required">This field cannot be empty.</p>
+                  <p class="validation" v-if="!$v.inputMedicineField.minLength">You need to input at least three characters.</p>
+            </div>
+            <div>
+               <input 
+                     type="date" 
+                     class="input-box" 
+                     @input="$v.inputExpiryDateField.$touch()" 
+                     v-model="inputExpiryDateField" 
+                     v-on:keyup.enter="addMedicine" 
+                     placeholder="Input expiry date" />
+                  <p class="validation" v-if="!$v.inputExpiryDateField.required">This field cannot be empty.</p>
+            </div>
            <button @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
+      
        <section class="container">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
@@ -25,14 +45,14 @@
              </div>
           </div>
        </section>
-       <!-- <p v-if="v.inputMedicineField.required">This field cannot be empty. Please provide a valid medicine name.</p> -->
        <section class="container">
           <div class="row">
-             <div class="offset-md-3 col-md-6 mt-3">
+             <div class="offset-md-3 col-md-6 mt-3">       
                 <ul class="list-group justify-content-center">
                   <div v-if="isActive">
+                  <h1>Expired medicine:</h1>
                    <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
-                      <div class="row align-items-center" v-if="medicine.isExpired">
+                      <div class="row justify-content-space-between" v-if="medicine.isExpired">
                            <div>{{ medicine.name }} </div> 
                            <div v-bind:class="{ expired: isExpired }">{{ medicine.date }} </div> 
                       </div>
@@ -52,7 +72,7 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import MedicineCart from './components/MedicineCart.vue';
-import { required } from 'vuelidate/lib/validators'
+import { required, minLength } from 'vuelidate/lib/validators';
 
 export default {
   name: 'app',
@@ -72,7 +92,11 @@ export default {
   },
   validations: {
      inputMedicineField: {
-        required
+        required: required, 
+        minLength: minLength(3)
+     },
+     inputExpiryDateField: {
+        required: required
      }
   },
   methods: {
@@ -81,7 +105,7 @@ export default {
       console.log("medicine"+medicine);
       expiryDate = this.inputExpiryDateField;
       console.log("expiryDateField"+expiryDate);
-      this.medicineList.push({name: medicine, date: expiryDate, isExpired: false});
+      this.medicineList.push({name: medicine, date: expiryDate, isExpired: true});
       console.log("name"+name)
       console.log("date"+date)
       console.log("isExpired"+isExpired)
@@ -132,9 +156,14 @@ h1 {
 }
 
 .input-box {
+    height: 50px;
     margin-right: 10px;
     width: 300px;
     text-align: center;
+}
+
+button {
+   height: 50px;
 }
 
 h5 {
@@ -171,6 +200,11 @@ li {
 
 .btn-secondary {
   margin-left: 10px;
+}
+
+.validation {
+   color: white;
+   text-align: left;
 }
 
 </style>
