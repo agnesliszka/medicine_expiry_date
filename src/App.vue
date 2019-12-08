@@ -35,11 +35,11 @@
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
                    <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
-                      <div class="row align-items-center">
-                        <div> {{ medicine.date }} </div>
-                           <div class="col-md-6">{{ medicine.name }} </div>                                   
-                        <span @click="deleteMedicine(medicine)" class="offset-sm-1 col-sm-2 delete text-right">X</span>
-                      </div>
+                      <div class="row align-items-center" :class="{expired: isMedicineExpired}">
+                           <div> {{ medicine.date }} </div>
+                              <div class="col-md-6">{{ medicine.name }} </div>                                   
+                           <span @click="deleteMedicine(medicine)" class="offset-sm-1 col-sm-2 delete text-right">X</span>
+                     </div>
                    </li>
                 </ul>
              </div>
@@ -52,9 +52,9 @@
                   <div v-if="isActive">
                   <h1>Expired medicine:</h1>
                    <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
-                      <div class="expired" v-if="medicine.isExpired">
+                      <div :class="{expired: isExpired}">
                            <div>{{ medicine.name }} </div> 
-                           <div v-bind:class="{ expired: isExpired }">{{ medicine.date }} </div> 
+                           <div>{{ medicine.date }} </div> 
                       </div>
                    </li>
                    </div>
@@ -88,6 +88,7 @@ export default {
       expiryDate: "",
       medicineList: [],
       isActive: false,
+      isExpired: false
     }
   },
   validations: {
@@ -100,36 +101,41 @@ export default {
      }
   },
   methods: {
-    addMedicine: function(medicine, expiryDate) {
+   isMedicineExpired: function(expiryDate) {
+      console.log(expiryDate)
+      let today = new Date();
+      console.log(today)
+      today = today.timestamp.getTime()
+      console.log(today)
+      let medicineExpiryDate = new Date(expiryDate);
+      medicineExpiryDate = medicineExpiryDate.getTime()
+      console.log(medicineExpiryDate)
+      
+      if(medicineExpiryDate < today) {
+         return false
+      }
+      else{return true}
+   },
+   addMedicine: function(medicine, expiryDate) {
       medicine = this.inputMedicineField;
       expiryDate = this.inputExpiryDateField;
-      this.medicineList.push({name: medicine, date: expiryDate, isExpired: true});
+      this.medicineList.push({name: medicine, date: expiryDate});
       this.inputMedicineField = '';
       this.inputExpiryDateField = '';
+      this.isMedicineExpired(expiryDate);
    },
    deleteMedicine: function(medicine) {
       console.log(JSON.stringify(medicine))
       var index = this.medicineList.indexOf(medicine);
       this.medicineList.splice(index, 1);
    },
-   toggle: function(medicine) {
-      medicine.complete = !medicine.complete;
-      console.log("medicine.complete"+medicine.complete)
-   },
-   isExpired: function(medicine) {
-      const today = new Date();
-      const todaysDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      console.log("todays date"+todaysDate)
-      // if medicine.date < todaysDate {
-      //   return false
-      // }
-   }, 
    showExpiredMedicine: function() {
+      medicineList.forEach.isExpired();
       this.isActive = !this.isActive;
-   }
-  //  mounted() {
-    //  isExpired()
-  //  },
+   },
+   // mounted: function() {
+   //   isExpired();
+   // },
  }
 }
 </script>
@@ -199,8 +205,7 @@ li {
 }
 
 .expired {
-   display: flex;
-   justify-content: space-around;
+   background-color: red;
 }
 
 </style>
