@@ -105,9 +105,11 @@ export default {
       console.log(expiryDate)
       let today = new Date();
       console.log(today)
+      today.setHours(0,0,0,0)
       today = today.timestamp.getTime()
       console.log(today)
       let medicineExpiryDate = new Date(expiryDate);
+      medicineExpiryDate.setHours(0,0,0,0)
       medicineExpiryDate = medicineExpiryDate.getTime()
       console.log(medicineExpiryDate)
       
