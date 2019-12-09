@@ -104,19 +104,22 @@ export default {
    isMedicineExpired: function(expiryDate) {
       console.log(expiryDate)
       let today = new Date();
+      today.setHours(0,0,0,0);
       console.log(today)
-      today.setHours(0,0,0,0)
-      today = today.timestamp.getTime()
+      today = today.getTime();
+      
       console.log(today)
       let medicineExpiryDate = new Date(expiryDate);
-      medicineExpiryDate.setHours(0,0,0,0)
-      medicineExpiryDate = medicineExpiryDate.getTime()
+      medicineExpiryDate.setHours(0,0,0,0);
+      medicineExpiryDate = medicineExpiryDate.getTime();
       console.log(medicineExpiryDate)
       
       if(medicineExpiryDate < today) {
          return false
+         console.log("false");
       }
       else{return true}
+      console.log("true");
    },
    addMedicine: function(medicine, expiryDate) {
       medicine = this.inputMedicineField;
