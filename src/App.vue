@@ -112,11 +112,9 @@ export default {
       console.log("medicine expiry date"+medicineExpiryDate)
       
       if(medicineExpiryDate>today) {
-         return true;
-         console.log("false");
+         return true;  
       }
       else{return false;}
-      console.log("true");
    },
    addMedicine: function(medicine, expiryDate) {
       medicine = this.inputMedicineField;
