@@ -25,7 +25,7 @@
                      placeholder="Input expiry date" />
                   <p class="validation" v-if="!$v.inputExpiryDateField.required">This field cannot be empty.</p>
             </div>
-           <button v-if="$v.inputMedicineField.minLength  && inputExpiryDateField.required !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
+           <button v-if="inputMedicineField.length >=3  && inputExpiryDateField !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
@@ -45,7 +45,7 @@
              </div>
           </div>
        </section>
-       <section class="container">
+       <!-- <section class="container">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">       
                 <ul class="list-group justify-content-center">
@@ -61,7 +61,7 @@
                 </ul>
              </div>
           </div>
-       </section>      
+       </section>       -->
     </div>
   </div>
 </template>
