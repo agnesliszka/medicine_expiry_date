@@ -25,7 +25,7 @@
                      placeholder="Input expiry date" />
                   <p class="validation" v-if="!$v.inputExpiryDateField.required">This field cannot be empty.</p>
             </div>
-           <button v-if="$v.inputMedicineField.minLength  && inputExpiryDateField !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
+           <button v-if="$v.inputMedicineField.minLength  && inputExpiryDateField.required !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
