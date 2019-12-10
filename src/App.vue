@@ -25,7 +25,7 @@
                      placeholder="Input expiry date" />
                   <p class="validation" v-if="!$v.inputExpiryDateField.required">This field cannot be empty.</p>
             </div>
-           <button @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
+           <button v-if="$v.inputMedicineField.minLength  && inputExpiryDateField !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
         </div>
       </section>
@@ -102,23 +102,20 @@ export default {
   },
   methods: {
    isMedicineExpired: function(expiryDate) {
-      console.log(expiryDate)
       let today = new Date();
       today.setHours(0,0,0,0);
-      console.log(today)
       today = today.getTime();
-      
-      console.log(today)
+      console.log("today"+today)
       let medicineExpiryDate = new Date(expiryDate);
       medicineExpiryDate.setHours(0,0,0,0);
       medicineExpiryDate = medicineExpiryDate.getTime();
-      console.log(medicineExpiryDate)
+      console.log("medicine expiry date"+medicineExpiryDate)
       
-      if(medicineExpiryDate < today) {
-         return false
+      if(medicineExpiryDate<today) {
+         return false;
          console.log("false");
       }
-      else{return true}
+      else{return true;}
       console.log("true");
    },
    addMedicine: function(medicine, expiryDate) {
