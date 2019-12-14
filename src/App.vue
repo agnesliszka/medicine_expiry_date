@@ -27,13 +27,13 @@
             </div>
            <button v-if="medicineNameInput.length >=3  && medicineExpiryDateInput !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">
-              <span v-if="isActive">Hide Medicine List</span>
-              <span v-if="!isActive">Show Medicine List</span>
+              <span v-if="$store.state.isActive">Hide Medicine List</span>
+              <span v-if="!$store.state.isActive">Show Medicine List</span>
             </button>
         </div>
       </section>
       
-       <section class="container" v-if="isActive">
+       <section class="container" v-if="$store.state.isActive">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
@@ -77,9 +77,7 @@ export default {
       medicineNameInput: '',
       medicineExpiryDateInput: '',
       medicineList: [],
-      isActive: true,
-      isExpired: false
-    }
+      }
   },
   validations: {
      medicineNameInput: {
@@ -119,7 +117,7 @@ export default {
       this.medicineList.splice(index, 1);
    },
    showExpiredMedicine: function() {
-      this.isActive = !this.isActive;
+      this.$store.state.isActive = !this.$store.state.isActive;
    },
  }
 }
