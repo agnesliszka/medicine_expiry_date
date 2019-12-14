@@ -26,11 +26,14 @@
                   <p class="validation" v-if="!$v.medicineExpiryDateInput.required">This field cannot be empty.</p>
             </div>
            <button v-if="medicineNameInput.length >=3  && medicineExpiryDateInput !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
-           <button @click="showExpiredMedicine" class="btn btn-secondary">Show Expired Medicine</button>
+           <button @click="showExpiredMedicine" class="btn btn-secondary">
+              <span v-if="isActive">Hide Medicine List</span>
+              <span v-if="!isActive">Show Medicine List</span>
+            </button>
         </div>
       </section>
       
-       <section class="container">
+       <section class="container" v-if="isActive">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
@@ -50,23 +53,6 @@
              </div>
           </div>
        </section>
-       <!-- <section class="container">
-          <div class="row">
-             <div class="offset-md-3 col-md-6 mt-3">       
-                <ul class="list-group justify-content-center">
-                  <div v-if="isActive">
-                  <h1>Expired medicine:</h1>
-                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
-                      <div :class="{expired: isExpired}">
-                           <div>{{ medicine.name }} </div> 
-                           <div>{{ medicine.date }} </div> 
-                      </div>
-                   </li>
-                   </div>
-                </ul>
-             </div>
-          </div>
-       </section>       -->
     </div>
   </div>
 </template>
@@ -91,7 +77,7 @@ export default {
       medicineNameInput: '',
       medicineExpiryDateInput: '',
       medicineList: [],
-      isActive: false,
+      isActive: true,
       isExpired: false
     }
   },
@@ -133,12 +119,8 @@ export default {
       this.medicineList.splice(index, 1);
    },
    showExpiredMedicine: function() {
-      medicineList.forEach.isExpired();
       this.isActive = !this.isActive;
    },
-   // mounted: function() {
-   //   isExpired();
-   // },
  }
 }
 </script>
