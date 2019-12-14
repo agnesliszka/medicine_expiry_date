@@ -12,7 +12,7 @@ export default {
   methods: {
    deleteMedicine: function(medicine) {
       console.log(JSON.stringify(medicine))
-      var index = this.medicineList.indexOf(medicine);
+      const index = this.medicineList.indexOf(medicine);
       this.medicineList.splice(index, 1);
    },
   }

@@ -115,7 +115,7 @@ export default {
    }  else  { return false }
    },
    deleteMedicine: function(medicine) {
-      var index = this.medicineList.indexOf(medicine);
+      const index = this.medicineList.indexOf(medicine);
       this.medicineList.splice(index, 1);
    },
    showExpiredMedicine: function() {
