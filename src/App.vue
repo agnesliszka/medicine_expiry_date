@@ -18,14 +18,13 @@
             <div>
                <input 
                      type="date" 
-                     class="input-box" 
-                     @input="$v.medicineExpiryDateInput.$touch()" 
-                     v-model="medicineExpiryDateInput" 
+                     class="input-box"  
+                     v-model="$store.state.medicineExpiryDateInput" 
                      v-on:keydown.enter.prevent="addMedicine" 
                      placeholder="Input expiry date" />
-                  <p class="validation" v-if="!$v.medicineExpiryDateInput.required">This field cannot be empty.</p>
+                  <p class="validation" v-if="$store.state.medicineExpiryDateInput.length<10">Please input a valid date.</p>
             </div>
-           <button v-if="medicineNameInput.length >=3  && medicineExpiryDateInput !==''" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
+           <button v-if="medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">
               <span v-if="$store.state.isActive">Hide Medicine List</span>
               <span v-if="!$store.state.isActive">Show Medicine List</span>
@@ -74,7 +73,7 @@ export default {
   data () {
     return {
       medicineNameInput: '',
-      medicineExpiryDateInput: '',
+      // medicineExpiryDateInput: '',
       // medicineList: [],
       }
   },
@@ -83,9 +82,9 @@ export default {
         required: required, 
         minLength: minLength(3)
      },
-     medicineExpiryDateInput: {
-        required: required
-     }
+   //   medicineExpiryDateInput: {
+   //      required: required
+   //   }
   },
   methods: {
    isMedicineExpired: function(expiryDate) {
@@ -103,11 +102,11 @@ export default {
    },
    addMedicine: function(medicine, expiryDate) {
          medicine = this.medicineNameInput;
-         expiryDate = this.medicineExpiryDateInput;
+         expiryDate = this.$store.state.medicineExpiryDateInput;
          if (medicine.length > 3 && expiryDate.length === 10 ){
          this.$store.state.medicineList.push({name: medicine, date: expiryDate});
          this.medicineNameInput = '';
-         this.medicineExpiryDateInput = '';
+         this.$store.state.medicineExpiryDateInput = '';
          this.isMedicineExpired(expiryDate);
    }  else  { return false }
    },

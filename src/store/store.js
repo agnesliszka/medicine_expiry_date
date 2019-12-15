@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Vuelidate from 'vuelidate';
+import { required, minLength } from 'vuelidate/lib/validators';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
       medicineNameInput: '',
-      // medicineExpiryDateInput: '',
+      medicineExpiryDateInput: '',
       medicineList: [],
       isActive: true,
     }
