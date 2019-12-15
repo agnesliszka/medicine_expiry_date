@@ -37,10 +37,9 @@
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in medicineList" v-bind:key="medicine.id">
+                   <li class="row list-group-item border mt-2" v-for="medicine in $store.state.medicineList" v-bind:key="medicine.id">
                       <!-- <medicine-cart
                       :medicine="medicine"
-                      :medicineList="medicineList"
                       >
                       </medicine-cart> -->
                       <div class="row align-items-center" :class="{expired: isMedicineExpired(medicine.date)}">
@@ -76,7 +75,7 @@ export default {
     return {
       medicineNameInput: '',
       medicineExpiryDateInput: '',
-      medicineList: [],
+      // medicineList: [],
       }
   },
   validations: {
@@ -106,15 +105,15 @@ export default {
          medicine = this.medicineNameInput;
          expiryDate = this.medicineExpiryDateInput;
          if (medicine.length > 3 && expiryDate.length === 10 ){
-         this.medicineList.push({name: medicine, date: expiryDate});
+         this.$store.state.medicineList.push({name: medicine, date: expiryDate});
          this.medicineNameInput = '';
          this.medicineExpiryDateInput = '';
          this.isMedicineExpired(expiryDate);
    }  else  { return false }
    },
    deleteMedicine: function(medicine) {
-      const index = this.medicineList.indexOf(medicine);
-      this.medicineList.splice(index, 1);
+      const index = this.$store.state.medicineList.indexOf(medicine);
+      this.$store.state.medicineList.splice(index, 1);
    },
    showExpiredMedicine: function() {
       this.$store.state.isActive = !this.$store.state.isActive;

@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
     state: {
       medicineNameInput: '',
       // medicineExpiryDateInput: '',
-      // medicineList: [],
+      medicineList: [],
       isActive: true,
     }
 })
