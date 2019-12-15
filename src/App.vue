@@ -8,12 +8,11 @@
                <input 
                   type="text" 
                   class="input-box" 
-                  @input="$v.medicineNameInput.$touch()" 
-                  v-model="medicineNameInput" 
+                  v-model="$store.state.medicineNameInput" 
                   v-on:keydown.enter.prevent="addMedicine"
                   placeholder="Input a medicine" />
-                  <p class="validation" v-if="!$v.medicineNameInput.required">This field cannot be empty.</p>
-                  <p class="validation" v-if="!$v.medicineNameInput.minLength">You need to input at least three characters.</p>
+                  <p class="validation" v-if="$store.state.medicineNameInput ===''">This field cannot be empty.</p>
+                  <p class="validation" v-else-if="$store.state.medicineNameInput.length <=3">You need to input at least three characters.</p>
             </div>
             <div>
                <input 
@@ -22,9 +21,9 @@
                      v-model="$store.state.medicineExpiryDateInput" 
                      v-on:keydown.enter.prevent="addMedicine" 
                      placeholder="Input expiry date" />
-                  <p class="validation" v-if="$store.state.medicineExpiryDateInput.length<10">Please input a valid date.</p>
+                  <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
             </div>
-           <button v-if="medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
+           <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">
               <span v-if="$store.state.isActive">Hide Medicine List</span>
               <span v-if="!$store.state.isActive">Show Medicine List</span>
@@ -69,23 +68,15 @@ export default {
   components: {
      'medicine-cart': MedicineCart
  },
-
-  data () {
-    return {
-      medicineNameInput: '',
-      // medicineExpiryDateInput: '',
-      // medicineList: [],
-      }
-  },
-  validations: {
-     medicineNameInput: {
-        required: required, 
-        minLength: minLength(3)
-     },
-   //   medicineExpiryDateInput: {
-   //      required: required
-   //   }
-  },
+//   validations: {
+//      medicineNameInput: {
+//         required: required, 
+//         minLength: minLength(3)
+//      },
+//      medicineExpiryDateInput: {
+//         required: required
+//      }
+//   },
   methods: {
    isMedicineExpired: function(expiryDate) {
       let today = new Date();
@@ -101,11 +92,11 @@ export default {
       else{return false;}
    },
    addMedicine: function(medicine, expiryDate) {
-         medicine = this.medicineNameInput;
+         medicine = this.$store.state.medicineNameInput;
          expiryDate = this.$store.state.medicineExpiryDateInput;
          if (medicine.length > 3 && expiryDate.length === 10 ){
          this.$store.state.medicineList.push({name: medicine, date: expiryDate});
-         this.medicineNameInput = '';
+         this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
          this.isMedicineExpired(expiryDate);
    }  else  { return false }
