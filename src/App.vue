@@ -11,8 +11,8 @@
                   v-model="$store.state.medicineNameInput" 
                   v-on:keydown.enter.prevent="addMedicine"
                   placeholder="Input a medicine" />
-                  <p class="validation" v-if="$store.state.medicineNameInput ===''">This field cannot be empty.</p>
-                  <p class="validation" v-else-if="$store.state.medicineNameInput.length <=3">You need to input at least three characters.</p>
+               <p class="validation" v-if="$store.state.medicineNameInput ===''">This field cannot be empty.</p>
+               <p class="validation" v-else-if="$store.state.medicineNameInput.length <=3">You need to input at least three characters.</p>
             </div>
             <div>
                <input 
@@ -21,7 +21,7 @@
                      v-model="$store.state.medicineExpiryDateInput" 
                      v-on:keydown.enter.prevent="addMedicine" 
                      placeholder="Input expiry date" />
-                  <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
+               <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
             </div>
            <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
            <button @click="showExpiredMedicine" class="btn btn-secondary">
@@ -164,6 +164,14 @@ li {
 
 .expired {
    background-color: red;
+}
+
+input ~ p {
+   display: none;
+}
+
+input:focus ~ p {
+   display: block;
 }
 
 </style>
