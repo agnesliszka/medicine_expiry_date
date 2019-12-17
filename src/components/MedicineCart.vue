@@ -8,12 +8,11 @@
 <script>
 
 export default {
-  props: ["medicine, medicineList"],
+  props: ["medicine"],
   methods: {
-   deleteMedicine: function(medicine) {
-      console.log(JSON.stringify(medicine))
-      const index = this.medicineList.indexOf(medicine);
-      this.medicineList.splice(index, 1);
+  deleteMedicine: function(medicine) {
+      const index = this.$store.state.medicineList.indexOf(medicine);
+      this.$store.state.medicineList.splice(index, 1);
    },
   }
 }

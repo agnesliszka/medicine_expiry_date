@@ -36,15 +36,10 @@
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
                    <li class="row list-group-item border mt-2" v-for="medicine in $store.state.medicineList" v-bind:key="medicine.id">
-                      <!-- <medicine-cart
+                      <medicine-cart
                       :medicine="medicine"
                       >
-                      </medicine-cart> -->
-                      <div class="row align-items-center" :class="{expired: isMedicineExpired(medicine.date)}">
-                           <div> {{ medicine.date }} </div>
-                              <div class="col-md-6">{{ medicine.name }} </div>                                   
-                           <span @click="deleteMedicine(medicine)" class="offset-sm-1 col-sm-2 delete text-right">X</span>
-                     </div>
+                      </medicine-cart>
                    </li>
                 </ul>
              </div>
@@ -68,15 +63,6 @@ export default {
   components: {
      'medicine-cart': MedicineCart
  },
-//   validations: {
-//      medicineNameInput: {
-//         required: required, 
-//         minLength: minLength(3)
-//      },
-//      medicineExpiryDateInput: {
-//         required: required
-//      }
-//   },
   methods: {
    isMedicineExpired: function(expiryDate) {
       let today = new Date();
