@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <div class="header">
-      <h1>Medicine expiry date tracker</h1>
-    </div>
-    <div class="controls">
+      <div class="controls">
         <label for="base">Base Color</label>
         <input type="color" name="base" v-model="baseColor">
-     </div>
+      </div>
+      <h1 :style="{color: baseColor}">Medicine expiry date tracker</h1>
+      <div class="current-date" :value="currentDate">
+      </div>
+    </div>
     <div class="container">
       <section>
          <div class="row justify-content-center">
@@ -61,7 +63,7 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import MedicineCart from './components/MedicineCart.vue';
+import MedicineCart from './components/MedicineCart.vue';``
 import Vuelidate from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
 
@@ -72,7 +74,8 @@ export default {
  },
  data () {
     return {
-       baseColor: "",
+       baseColor: "#ffc600",
+       currentDate: "blebleble"
     }
   },
   methods: {
@@ -107,10 +110,23 @@ export default {
    showExpiredMedicine: function() {
       this.$store.state.isActive = !this.$store.state.isActive;
    },
+   getColor: function(e) {
+      this.baseColor = e.target.value
+   },
+   // currentDate: function() {
+   //    let today = new Date();
+   //    console.log(today);
+   //    this.currentDate = today;
+   // }   
  },
  computed: {
-    
+    baseColor() {
+       return getColor();
+    },
  },
+//  mounted(){
+//     this.currentDate();
+//  } 
 }
 </script>
 
@@ -127,22 +143,34 @@ export default {
 
 .header {
    display: flex;
-   height: 12vh;
+   height: 10vh;
    align-items: center;
    justify-content: center;
+   flex-grow: 1;
 }
 
 h1 {
   font-family: Goudy Old Style;
-  color: white;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .controls {
    height: 30px;
    display: flex;
    align-items: center;
-   justify-content: center;
+   justify-content: flex-start;
+   margin-top: 10px;
    margin-bottom: 10px;
+   margin-left: 10px;
+   flex-grow: 1;
+}
+
+.current-date {
+   display: flex;
+   flex-grow: 1;
+   justify-content: flex-end;
+   margin-right: 10px;
 }
 
 label {
