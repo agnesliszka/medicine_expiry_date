@@ -3,6 +3,10 @@
     <div class="header">
       <h1>Medicine expiry date tracker</h1>
     </div>
+    <div class="controls">
+        <label for="base">Base Color</label>
+        <input type="color" name="base" v-model="baseColor">
+     </div>
     <div class="container">
       <section>
          <div class="row justify-content-center">
@@ -40,6 +44,7 @@
                    <li class="row list-group-item border mt-2" v-for="medicine in $store.state.medicineList" v-bind:key="medicine.id">
                       <medicine-cart
                       :medicine="medicine"
+                      :isMedicineExpired="isMedicineExpired"
                       >
                       </medicine-cart>
                    </li>
@@ -65,6 +70,11 @@ export default {
   components: {
      'medicine-cart': MedicineCart
  },
+ data () {
+    return {
+       baseColor: "",
+    }
+  },
   methods: {
    isMedicineExpired: function(expiryDate) {
       let today = new Date();
@@ -74,10 +84,11 @@ export default {
       medicineExpiryDate.setHours(0,0,0,0);
       medicineExpiryDate = medicineExpiryDate.getTime();
       
-      if(medicineExpiryDate>today) {
+      if(medicineExpiryDate<today) {
          return true;  
       }
-      else{return false;}
+      else{
+         return false;}
    },
    addMedicine: function(medicine, expiryDate) {
          medicine = this.$store.state.medicineNameInput;
@@ -87,7 +98,7 @@ export default {
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
          this.isMedicineExpired(expiryDate);
-   }  else  { return false }
+   }  else return;
    },
    deleteMedicine: function(medicine) {
       const index = this.$store.state.medicineList.indexOf(medicine);
@@ -96,7 +107,10 @@ export default {
    showExpiredMedicine: function() {
       this.$store.state.isActive = !this.$store.state.isActive;
    },
- }
+ },
+ computed: {
+    
+ },
 }
 </script>
 
@@ -123,6 +137,20 @@ h1 {
   color: white;
 }
 
+.controls {
+   height: 30px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin-bottom: 10px;
+}
+
+label {
+   color: white;
+   margin-top: 10px;
+   margin-right: 10px;
+}
+
 .input-box {
     height: 50px;
     margin-right: 10px;
@@ -132,10 +160,6 @@ h1 {
 
 button {
    height: 50px;
-}
-
-h5 {
-   margin-bottom: 0px;
 }
 
 ul {
@@ -148,20 +172,6 @@ li {
   margin: 0 10px;
 }
 
-.single-row{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.delete {
-   cursor: pointer;
-}
-
-.delete:hover {
-   color: #999999;
-}
-
 .btn-secondary {
   margin-left: 10px;
 }
@@ -169,10 +179,6 @@ li {
 .validation {
    color: white;
    text-align: left;
-}
-
-.expired {
-   background-color: red;
 }
 
 input ~ p {
