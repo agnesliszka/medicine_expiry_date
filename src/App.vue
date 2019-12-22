@@ -6,7 +6,8 @@
         <input type="color" name="base" v-model="baseColor">
       </div>
       <h1 :style="{color: baseColor}">Medicine expiry date tracker</h1>
-      <div class="current-date" :value="currentDate">
+      <div class="current-date">
+         {{ currentDate }}
       </div>
     </div>
     <div class="container">
@@ -66,6 +67,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import MedicineCart from './components/MedicineCart.vue';``
 import Vuelidate from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
+import moment from 'moment';
 
 export default {
   name: 'app',
@@ -75,8 +77,11 @@ export default {
  data () {
     return {
        baseColor: "#ffc600",
-       currentDate: "blebleble"
+       currentDate: ""
     }
+  },
+  mounted() {
+     this.setCurrentDate();
   },
   methods: {
    isMedicineExpired: function(expiryDate) {
@@ -109,24 +114,18 @@ export default {
    },
    showExpiredMedicine: function() {
       this.$store.state.isActive = !this.$store.state.isActive;
-   },
-   getColor: function(e) {
-      this.baseColor = e.target.value
-   },
-   // currentDate: function() {
-   //    let today = new Date();
-   //    console.log(today);
-   //    this.currentDate = today;
-   // }   
+   },  
+   setCurrentDate: function() {
+      let todaysDate = new Date()
+      todaysDate.setHours(0,0,0,0);
+      this.currentDate = moment(todaysDate).format('DD/MM/YYYY')
+   }
  },
  computed: {
-    baseColor() {
-       return getColor();
+    getColor() {
+      this.baseColor = e.target.value
     },
  },
-//  mounted(){
-//     this.currentDate();
-//  } 
 }
 </script>
 
@@ -170,7 +169,8 @@ h1 {
    display: flex;
    flex-grow: 1;
    justify-content: flex-end;
-   margin-right: 10px;
+   margin-right: 20px;
+   color: white;
 }
 
 label {
