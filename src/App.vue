@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <h1>Medicine expiry date tracker</h1>
+    <div class="header">
+      <h1>Medicine expiry date tracker</h1>
+    </div>
     <div class="container">
       <section>
          <div class="row justify-content-center">
@@ -107,6 +109,13 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
   background-image: url("./assets/background.jpg");
+}
+
+.header {
+   display: flex;
+   height: 12vh;
+   align-items: center;
+   justify-content: center;
 }
 
 h1 {
