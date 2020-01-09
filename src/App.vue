@@ -17,8 +17,8 @@
               <span v-if="$store.state.isActive">Hide Medicine List</span>
               <span v-if="!$store.state.isActive">Show Medicine List</span>
             </button>
-            <button @click="sortMedicineListAscendingByName" class="btn btn-dark">Sort by name ascendingly</button>
-            <button @click="sortMedicineListAscendingByDate" class="btn btn-dark">Sort by date ascendingly</button>
+            <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
+            <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
          </div>
          <div class="row justify-content-center">
             <div>
@@ -123,7 +123,7 @@ export default {
       todaysDate.setHours(0,0,0,0);
       this.currentDate = moment(todaysDate).format('DD/MM/YYYY')
    },
-   sortMedicineListAscendingByName: function() {
+   sortMedicineListByNameAscendingly: function() {
       function compare(a, b) {
         if (a.name < b.name)
           return -1;
@@ -131,10 +131,19 @@ export default {
           return 1;
         return 0;
       }
-      this.changeSortedByNameFlag();
       return this.$store.state.medicineList.sort(compare);
     },
-   sortMedicineListAscendingByDate: function() {
+    sortMedicineListByNameDescendingly: function() {
+      function compare(a, b) {
+        if (a.name < b.name)
+          return 1;
+        if (a.name > b.name)
+          return -1;
+        return 0;
+      }
+      return this.$store.state.medicineList.sort(compare);
+    },
+   sortMedicineListByDateAscendingly: function() {
       function compare(a, b) {
         if (a.date < b.date)
           return -1;
@@ -142,21 +151,50 @@ export default {
           return 1;
         return 0;
       }
-      this.changeSortedByDateFlag();
+      return this.$store.state.medicineList.sort(compare);
+    },
+    sortMedicineListByDateDescendingly: function() {
+      function compare(a, b) {
+        if (a.date < b.date)
+          return 1;
+        if (a.date > b.date)
+          return -1;
+        return 0;
+      }
       return this.$store.state.medicineList.sort(compare);
     },
     changeSortedByNameFlag: function() {
+       if(this.$store.state.sortedByNameAscendigly){
+         this.sortMedicineListByNameAscendingly()
+       }
+       else if(!this.$store.state.sortedByNameDescendigly){
+          this.sortMedicineListByNameDescendingly()
+       }
        this.$store.state.sortedByNameAscendigly = !this.$store.state.sortedByNameAscendigly;
     },
     changeSortedByDateFlag: function() {
+       if(this.$store.state.sortedByDateAscendigly){
+         this.sortMedicineListByDateAscendingly()
+       }
+       else if(!this.$store.state.sortedByDateDescendigly){
+          this.sortMedicineListByDateDescendingly()
+       }
        this.$store.state.sortedByDateAscendigly = !this.$store.state.sortedByDateAscendigly;
-    }
+    },
  },
  computed: {
-   getColor() {
+   getColor: function() {
       this.baseColor = e.target.value
-    }
- },
+    },
+   getNameButtonText: function() {
+      return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
+      console.log(this.$store.state.sortedByNameAscendigly)
+   },
+   getDateButtonText: function() {
+      return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
+      console.log(this.$store.state.sortedByDateAscendigly)
+   }
+ }
 }
 </script>
 
