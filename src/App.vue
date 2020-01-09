@@ -29,7 +29,7 @@
                   v-on:keydown.enter.prevent="addMedicine"
                   placeholder="Input a medicine" />
                <p class="validation" v-if="($store.state.medicineNameInput===''|| $store.state.medicineNameInput.trim()==='')">This field cannot be empty.</p>
-               <p class="validation" v-else-if="$store.state.medicineNameInput.length <=3">You need to input at least three characters.</p>
+               <p class="validation" v-else-if="$store.state.medicineNameInput.length <3">You need to input at least three characters.</p>
             </div>
             <div>
                <input 
@@ -104,7 +104,7 @@ export default {
    addMedicine: function(medicine, expiryDate) {
          medicine = this.$store.state.medicineNameInput;
          expiryDate = this.$store.state.medicineExpiryDateInput;
-         if (medicine.length > 3 && expiryDate.length === 10 && medicine.trim() !== ""){
+         if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
          this.$store.state.medicineList.push({name: medicine, date: expiryDate});
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
