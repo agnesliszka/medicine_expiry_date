@@ -11,5 +11,7 @@ export const store = new Vuex.Store({
       medicineExpiryDateInput: '',
       medicineList: [],
       isActive: true,
+      sortedByNameAscendigly: true,
+      sortedByDateAscendigly: true,
     }
 })

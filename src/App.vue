@@ -13,6 +13,14 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
+            <button @click="showExpiredMedicine" class="btn btn-danger">
+              <span v-if="$store.state.isActive">Hide Medicine List</span>
+              <span v-if="!$store.state.isActive">Show Medicine List</span>
+            </button>
+            <button @click="sortMedicineListAscendingByName" class="btn btn-dark">Sort by name ascendingly</button>
+            <button @click="sortMedicineListAscendingByDate" class="btn btn-dark">Sort by date ascendingly</button>
+         </div>
+         <div class="row justify-content-center">
             <div>
                <input 
                   type="text" 
@@ -32,11 +40,7 @@
                      placeholder="Input expiry date" />
                <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
             </div>
-           <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-secondary">Add a medicine</button>
-           <button @click="showExpiredMedicine" class="btn btn-secondary">
-              <span v-if="$store.state.isActive">Hide Medicine List</span>
-              <span v-if="!$store.state.isActive">Show Medicine List</span>
-            </button>
+            <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-warning">Add a medicine</button>
         </div>
       </section>
       
@@ -91,7 +95,6 @@ export default {
       let medicineExpiryDate = new Date(expiryDate);
       medicineExpiryDate.setHours(0,0,0,0);
       medicineExpiryDate = medicineExpiryDate.getTime();
-      
       if(medicineExpiryDate<today) {
          return true;  
       }
@@ -102,7 +105,6 @@ export default {
          medicine = this.$store.state.medicineNameInput;
          expiryDate = this.$store.state.medicineExpiryDateInput;
          if (medicine.length > 3 && expiryDate.length === 10 && medicine.trim() !== ""){
-            
          this.$store.state.medicineList.push({name: medicine, date: expiryDate});
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
@@ -120,12 +122,40 @@ export default {
       let todaysDate = new Date()
       todaysDate.setHours(0,0,0,0);
       this.currentDate = moment(todaysDate).format('DD/MM/YYYY')
-   }
+   },
+   sortMedicineListAscendingByName: function() {
+      function compare(a, b) {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      }
+      this.changeSortedByNameFlag();
+      return this.$store.state.medicineList.sort(compare);
+    },
+   sortMedicineListAscendingByDate: function() {
+      function compare(a, b) {
+        if (a.date < b.date)
+          return -1;
+        if (a.date > b.date)
+          return 1;
+        return 0;
+      }
+      this.changeSortedByDateFlag();
+      return this.$store.state.medicineList.sort(compare);
+    },
+    changeSortedByNameFlag: function() {
+       this.$store.state.sortedByNameAscendigly = !this.$store.state.sortedByNameAscendigly;
+    },
+    changeSortedByDateFlag: function() {
+       this.$store.state.sortedByDateAscendigly = !this.$store.state.sortedByDateAscendigly;
+    }
  },
  computed: {
-    getColor() {
+   getColor() {
       this.baseColor = e.target.value
-    },
+    }
  },
 }
 </script>
@@ -139,6 +169,14 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
   background-image: url("./assets/background.jpg");
+}
+
+.justify-content-center {
+   margin-bottom: 25px;
+}
+
+button {
+   margin-right: 10px;
 }
 
 .header {
