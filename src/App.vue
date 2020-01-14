@@ -132,7 +132,6 @@ export default {
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
          this.$refs.input.blur();
-         console.log(JSON.stringify(this.$store.state.expiredMedicineList))
    }  else return;
    },
    deleteMedicine: function(medicine) {
@@ -215,15 +214,12 @@ export default {
     },
    getNameButtonText: function() {
       return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
-      console.log(this.$store.state.sortedByNameAscendigly)
    },
    getDateButtonText: function() {
       return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
-      console.log(this.$store.state.sortedByDateAscendigly)
    },
    getButtonText: function() {
       return this.$store.state.showExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
-      console.log(this.$store.state.showExpiredMedicineOnly)
    }
  }
 }
