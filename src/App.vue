@@ -19,6 +19,7 @@
             </button>
             <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
             <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
+            <button @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
          </div>
          <div class="row justify-content-center">
             <div>
@@ -46,11 +47,26 @@
         </div>
       </section>
       
-       <section class="container" v-if="$store.state.isActive">
+       <section class="container" v-show="!$store.state.showExpiredMedicineOnly" v-if="$store.state.isActive">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
                    <li class="row list-group-item border mt-2" v-for="medicine in $store.state.medicineList" v-bind:key="medicine.id">
+                      <medicine-cart
+                      :medicine="medicine"
+                      :isMedicineExpired="isMedicineExpired"
+                      >
+                      </medicine-cart>
+                   </li>
+                </ul>
+             </div>
+          </div>
+       </section>
+       <section class="container" v-show="$store.state.showExpiredMedicineOnly">
+          <div class="row">
+             <div class="offset-md-3 col-md-6 mt-3">
+                <ul class="list-group justify-content-center">
+                   <li class="row list-group-item border mt-2" v-for="medicine in $store.state.expiredMedicineList" v-bind:key="medicine.id">
                       <medicine-cart
                       :medicine="medicine"
                       :isMedicineExpired="isMedicineExpired"
@@ -109,10 +125,14 @@ export default {
          isExpired = this.isMedicineExpired(expiryDate);
          if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
          this.$store.state.medicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+         if(isExpired === true){
+            this.$store.state.expiredMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+         }
+         this.isMedicineExpired(expiryDate);
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
          this.$refs.input.blur();
-         this.isMedicineExpired(expiryDate);
+         console.log(JSON.stringify(this.$store.state.expiredMedicineList))
    }  else return;
    },
    deleteMedicine: function(medicine) {
@@ -185,6 +205,9 @@ export default {
        }
        this.$store.state.sortedByDateAscendigly = !this.$store.state.sortedByDateAscendigly;
     },
+    showExpiredMedicineOnly: function() {
+       this.$store.state.showExpiredMedicineOnly = !this.$store.state.showExpiredMedicineOnly;
+    }
  },
  computed: {
    getColor: function() {
@@ -197,6 +220,10 @@ export default {
    getDateButtonText: function() {
       return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
       console.log(this.$store.state.sortedByDateAscendigly)
+   },
+   getButtonText: function() {
+      return this.$store.state.showExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
+      console.log(this.$store.state.showExpiredMedicineOnly)
    }
  }
 }
