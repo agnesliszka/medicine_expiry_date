@@ -13,7 +13,7 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-            <button @click="showExpiredMedicine" class="btn btn-danger">
+            <button v-show="$store.state.medicineList.length>0" @click="showMedicineList" class="btn btn-danger">
               <span v-if="$store.state.isActive">Hide Medicine List</span>
               <span v-if="!$store.state.isActive">Show Medicine List</span>
             </button>
@@ -115,7 +115,7 @@ export default {
       const index = this.$store.state.medicineList.indexOf(medicine);
       this.$store.state.medicineList.splice(index, 1);
    },
-   showExpiredMedicine: function() {
+   showMedicineList: function() {
       this.$store.state.isActive = !this.$store.state.isActive;
    },  
    setCurrentDate: function() {
