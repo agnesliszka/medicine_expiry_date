@@ -23,6 +23,7 @@
          <div class="row justify-content-center">
             <div>
                <input 
+                  ref="input"
                   type="text" 
                   class="input-box" 
                   v-model="$store.state.medicineNameInput" 
@@ -33,6 +34,7 @@
             </div>
             <div>
                <input 
+                     ref="input"
                      type="date" 
                      class="input-box"  
                      v-model="$store.state.medicineExpiryDateInput" 
@@ -101,13 +103,15 @@ export default {
       else{
          return false;}
    },
-   addMedicine: function(medicine, expiryDate) {
+   addMedicine: function(medicine, expiryDate, isExpired) {
          medicine = this.$store.state.medicineNameInput;
          expiryDate = this.$store.state.medicineExpiryDateInput;
+         isExpired = this.isMedicineExpired(expiryDate);
          if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
-         this.$store.state.medicineList.push({name: medicine, date: expiryDate});
+         this.$store.state.medicineList.push({name: medicine, date: expiryDate, expired: isExpired});
          this.$store.state.medicineNameInput = '';
          this.$store.state.medicineExpiryDateInput = '';
+         this.$refs.input.blur();
          this.isMedicineExpired(expiryDate);
    }  else return;
    },
