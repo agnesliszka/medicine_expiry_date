@@ -19,7 +19,7 @@
             </button>
             <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
             <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
-            <button @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
+            <button v-show="$store.state.expiredMedicineList.length>0" @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
          </div>
          <div class="row justify-content-center">
             <div>
