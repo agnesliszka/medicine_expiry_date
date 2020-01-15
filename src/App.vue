@@ -3,11 +3,11 @@
     <div class="header">
       <div class="controls">
         <label for="base">Base Color</label>
-        <input type="color" name="base" v-model="baseColor">
+        <input type="color" name="base" v-model="$store.state.baseColor">
       </div>
-      <h1 :style="{color: baseColor}">Medicine expiry date tracker</h1>
+      <h1 :style="{color: $store.state.baseColor}">Medicine expiry date tracker</h1>
       <div class="current-date">
-         {{ currentDate }}
+         {{ $store.state.currentDate }}
       </div>
     </div>
     <div class="container">
@@ -96,12 +96,6 @@ export default {
   components: {
      'medicine-cart': MedicineCart
  },
- data () {
-    return {
-       baseColor: "#ffc600",
-       currentDate: ""
-    }
-  },
   mounted() {
      this.setCurrentDate();
   },
@@ -144,7 +138,7 @@ export default {
    setCurrentDate: function() {
       let todaysDate = new Date()
       todaysDate.setHours(0,0,0,0);
-      this.currentDate = moment(todaysDate).format('DD/MM/YYYY')
+      this.$store.state.currentDate = moment(todaysDate).format('DD/MM/YYYY')
    },
    sortMedicineListByNameAscendingly: function() {
       function compare(a, b) {
@@ -210,7 +204,7 @@ export default {
  },
  computed: {
    getColor: function() {
-      this.baseColor = e.target.value
+      this.$store.state.baseColor = e.target.value
     },
    getNameButtonText: function() {
       return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'

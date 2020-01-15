@@ -12,8 +12,10 @@ export const store = new Vuex.Store({
       medicineList: [],
       expiredMedicineList: [],
       isActive: true,
+      currentDate: "",
       showExpiredMedicineOnly: false,
       sortedByNameAscendigly: true,
       sortedByDateAscendigly: true,
+      baseColor: "#ffc600",
     }
 })
