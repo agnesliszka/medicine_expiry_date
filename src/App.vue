@@ -21,32 +21,11 @@
             <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
             <button v-show="$store.state.expiredMedicineList.length>0" @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
          </div>
-         <div class="row justify-content-center">
-            <div>
-               <input 
-                  ref="input"
-                  type="text" 
-                  class="input-box" 
-                  v-model="$store.state.medicineNameInput" 
-                  v-on:keydown.enter.prevent="addMedicine"
-                  placeholder="Input a medicine" />
-               <p class="validation" v-if="($store.state.medicineNameInput===''|| $store.state.medicineNameInput.trim()==='')">This field cannot be empty.</p>
-               <p class="validation" v-else-if="$store.state.medicineNameInput.length <3">You need to input at least three characters.</p>
-            </div>
-            <div>
-               <input 
-                     ref="input"
-                     type="date" 
-                     class="input-box"  
-                     v-model="$store.state.medicineExpiryDateInput" 
-                     v-on:keydown.enter.prevent="addMedicine" 
-                     placeholder="Input expiry date" />
-               <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
-            </div>
-            <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-warning">Add a medicine</button>
-        </div>
+      <medicine-carts
+         :isMedicineExpired="isMedicineExpired"
+      >
+      </medicine-carts>
       </section>
-      
        <section class="container" v-show="!$store.state.showExpiredMedicineOnly" v-if="$store.state.isActive">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
@@ -86,48 +65,39 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import MedicineCart from './components/MedicineCart.vue';``
 import Vuelidate from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
 import moment from 'moment';
+import MedicineCart from './components/MedicineCart.vue';
+import MedicineCarts from './components/MedicineCarts.vue';
 
 export default {
+// TODO: 
+// create file with data names
+// in showExpiredMedicineOnly function show just expired medicine - filter
+
   name: 'app',
   components: {
-     'medicine-cart': MedicineCart
+     'medicine-cart': MedicineCart,
+     'medicine-carts': MedicineCarts
  },
   mounted() {
      this.setCurrentDate();
   },
   methods: {
    isMedicineExpired: function(expiryDate) {
-      let today = new Date();
-      today.setHours(0,0,0,0);
-      today = today.getTime();
-      let medicineExpiryDate = new Date(expiryDate);
-      medicineExpiryDate.setHours(0,0,0,0);
-      medicineExpiryDate = medicineExpiryDate.getTime();
-      if(medicineExpiryDate<today) {
-         return true;  
-      }
-      else{
-         return false;}
-   },
-   addMedicine: function(medicine, expiryDate, isExpired) {
-         medicine = this.$store.state.medicineNameInput;
-         expiryDate = this.$store.state.medicineExpiryDateInput;
-         isExpired = this.isMedicineExpired(expiryDate);
-         if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
-         this.$store.state.medicineList.push({name: medicine, date: expiryDate, expired: isExpired});
-         if(isExpired === true){
-            this.$store.state.expiredMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+         let today = new Date();
+         today.setHours(0,0,0,0);
+         today = today.getTime();
+         let medicineExpiryDate = new Date(expiryDate);
+         medicineExpiryDate.setHours(0,0,0,0);
+         medicineExpiryDate = medicineExpiryDate.getTime();
+         if(medicineExpiryDate<today) {
+               return true;  
          }
-         this.isMedicineExpired(expiryDate);
-         this.$store.state.medicineNameInput = '';
-         this.$store.state.medicineExpiryDateInput = '';
-         this.$refs.input.blur();
-   }  else return;
-   },
+         else{
+               return false;}
+         },
    deleteMedicine: function(medicine) {
       const index = this.$store.state.medicineList.indexOf(medicine);
       this.$store.state.medicineList.splice(index, 1);

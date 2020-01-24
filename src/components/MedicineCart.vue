@@ -8,6 +8,7 @@
 <script>
 
 export default {
+  name: 'medicine-carts',
   props: ["medicine", "isMedicineExpired"],
   methods: {
   deleteMedicine: function(medicine) {
