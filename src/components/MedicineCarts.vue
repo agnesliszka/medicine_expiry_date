@@ -8,8 +8,8 @@
                   v-model="$store.state.medicineNameInput" 
                   v-on:keydown.enter.prevent="addMedicine"
                   placeholder="Input a medicine" />
-               <p class="validation" v-if="($store.state.medicineNameInput===''|| $store.state.medicineNameInput.trim()==='')">This field cannot be empty.</p>
-               <p class="validation" v-else-if="$store.state.medicineNameInput.length <3">You need to input at least three characters.</p>
+               <p class="validation" v-if="(getMedicineNameInput === ''|| getMedicineNameInput.trim() === '')">This field cannot be empty.</p>
+               <p class="validation" v-else-if="getMedicineNameInput.length < 3">You need to input at least three characters.</p>
             </div>
             <div>
                <input 
@@ -19,15 +19,24 @@
                      v-model="$store.state.medicineExpiryDateInput" 
                      v-on:keydown.enter.prevent="addMedicine" 
                      placeholder="Input expiry date" />
-               <p class="validation" v-if="$store.state.medicineExpiryDateInput === ''">Please input a valid date.</p>
+               <p class="validation" v-if="getMedicineExpiryDateInput === ''">Please input a valid date.</p>
             </div>
-            <button v-if="$store.state.medicineNameInput.length >=3  && $store.state.medicineExpiryDateInput.length===10" @click="addMedicine" class="btn btn-warning">Add a medicine</button>
+            <button v-if="getMedicineNameInput.length >=3  && getMedicineExpiryDateInput.length === 10" @click="addMedicine" class="btn btn-warning">Add a medicine</button>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'medicine-carts',
     props: ["isMedicineExpired"],
+    computed: {
+        ...mapGetters([
+            'getMedicineNameInput',
+            'getMedicineExpiryDateInput',
+            'getMedicineList',
+            'getExpiredMedicineList'
+        ])
+    },
     methods: {
         isMedicineExpired: function(expiryDate) {
             let today = new Date();
@@ -44,13 +53,13 @@ export default {
                 }
             },
         addMedicine: function(medicine, expiryDate, isExpired) {
-            medicine = this.$store.state.medicineNameInput;
-            expiryDate = this.$store.state.medicineExpiryDateInput;
+            medicine = this.getMedicineNameInput;
+            expiryDate = this.getMedicineExpiryDateInput;
             isExpired = this.isMedicineExpired(expiryDate);
             if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
-                this.$store.state.medicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+                this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
                 if(isExpired === true){
-                    this.$store.state.expiredMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+                    this.getExpiredMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
                 }
                 this.isMedicineExpired(expiryDate);
                 this.$store.state.medicineNameInput = '';

@@ -17,5 +17,38 @@ export const store = new Vuex.Store({
       sortedByNameAscendigly: true,
       sortedByDateAscendigly: true,
       baseColor: "#ffc600",
-    }
+    },
+
+    getters: {
+      getMedicineNameInput: state => {
+      return state.medicineNameInput;
+      },
+      getMedicineExpiryDateInput: state => {
+        return state.medicineExpiryDateInput;
+      },
+      getMedicineList: state => {
+        return state.medicineList;
+        }, 
+      getExpiredMedicineList: state => {
+        return state.expiredMedicineList;
+        },
+      getIsActive: state => {
+        return state.isActive;
+        },
+      getCurrentDate: state => {
+        return state.currentDate;
+        },
+      getShowExpiredMedicineOnly: state => {
+        return state.showExpiredMedicineOnly;
+        },
+      getSortedByNameAscendigly: state => {
+        return state.sortedByNameAscendigly;
+        },
+      getSortedByDateAscendigly: state => {
+        return state.sortedByDateAscendigly;
+        },
+      getBaseColor: state => {
+        return state.baseColor;
+        },
+    } 
 })

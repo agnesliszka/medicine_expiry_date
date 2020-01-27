@@ -6,14 +6,19 @@
   </div>
 </template>
 <script>
-
+import { mapGetters } from 'vuex';
 export default {
   name: 'medicine-carts',
   props: ["medicine", "isMedicineExpired"],
+  computed: {
+        ...mapGetters([
+            'getMedicineList',
+        ])
+    },
   methods: {
   deleteMedicine: function(medicine) {
-      const index = this.$store.state.medicineList.indexOf(medicine);
-      this.$store.state.medicineList.splice(index, 1);
+      const index = this.getMedicineList.indexOf(medicine);
+      this.getMedicineList.splice(index, 1);
    },
   }
 }
