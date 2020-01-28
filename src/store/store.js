@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Vuelidate from 'vuelidate';
-import { required, minLength } from 'vuelidate/lib/validators';
 
 Vue.use(Vuex);
 

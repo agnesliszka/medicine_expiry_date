@@ -65,8 +65,6 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Vuelidate from 'vuelidate';
-import { required, minLength } from 'vuelidate/lib/validators';
 import moment from 'moment';
 import MedicineCart from './components/MedicineCart.vue';
 import MedicineCarts from './components/MedicineCarts.vue';
