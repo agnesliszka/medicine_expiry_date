@@ -10,7 +10,6 @@ export const store = new Vuex.Store({
       medicineNameInput: '',
       medicineExpiryDateInput: '',
       medicineList: [],
-      expiredMedicineList: [],
       isActive: true,
       currentDate: "",
       showExpiredMedicineOnly: false,
@@ -29,9 +28,6 @@ export const store = new Vuex.Store({
       getMedicineList: state => {
         return state.medicineList;
         }, 
-      getExpiredMedicineList: state => {
-        return state.expiredMedicineList;
-        },
       getIsActive: state => {
         return state.isActive;
         },

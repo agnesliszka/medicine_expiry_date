@@ -13,13 +13,13 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-            <button v-show="$store.state.medicineList.length>0" @click="showMedicineList" class="btn btn-danger">
+            <button v-show="$store.state.medicineList.length > 0" @click="showMedicineList" class="btn btn-danger">
               <span v-if="$store.state.isActive">Hide Medicine List</span>
               <span v-if="!$store.state.isActive">Show Medicine List</span>
             </button>
             <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
             <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
-            <button v-show="$store.state.expiredMedicineList.length>0" @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
+            <button v-show="expiredMedicineList.length > 0" @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
          </div>
       <medicine-carts
          :isMedicineExpired="isMedicineExpired"
@@ -45,7 +45,7 @@
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in $store.state.expiredMedicineList" v-bind:key="medicine.id">
+                   <li class="row list-group-item border mt-2" v-for="medicine in expiredMedicineList" v-bind:key="medicine.id">
                       <medicine-cart
                       :medicine="medicine"
                       :isMedicineExpired="isMedicineExpired"
@@ -70,7 +70,7 @@ import { required, minLength } from 'vuelidate/lib/validators';
 import moment from 'moment';
 import MedicineCart from './components/MedicineCart.vue';
 import MedicineCarts from './components/MedicineCarts.vue';
-
+import { mapGetters } from 'vuex';
 export default {
 // TODO: 
 // create file with data names
@@ -81,6 +81,44 @@ export default {
      'medicine-cart': MedicineCart,
      'medicine-carts': MedicineCarts
  },
+  computed: {
+      //   ...mapGetters([
+      //       'getIsActive',
+
+      //       'getMedicineList',
+
+      //       'getMedicineNameInput',
+      //       'getMedicineExpiryDateInput',
+            
+      //       'getMedicineNameInput',
+      //       'getExpiredMedicineList',
+            
+      //       'getMedicineNameInput',
+      //       'getCurrentDate',
+      //       'getShowExpiredMedicineOnly',
+      //       'getSortedByNameAscendigly',
+      //       'getSortedByDateAscendigly',
+      //       'getMedicineNameInput',
+            
+      //   ]),
+        getColor: function() {
+            this.$store.state.baseColor = e.target.value
+    },
+        getNameButtonText: function() {
+            return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
+         },
+        getDateButtonText: function() {
+            return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
+         },
+        getButtonText: function() {
+            return this.$store.state.showExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
+         },
+        expiredMedicineList: function() {
+            return this.$store.state.medicineList.filter(function(medicine) {
+            return medicine.expired
+         })
+        }
+    },
   mounted() {
      this.setCurrentDate();
   },
@@ -172,20 +210,6 @@ export default {
        this.$store.state.showExpiredMedicineOnly = !this.$store.state.showExpiredMedicineOnly;
     }
  },
- computed: {
-   getColor: function() {
-      this.$store.state.baseColor = e.target.value
-    },
-   getNameButtonText: function() {
-      return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
-   },
-   getDateButtonText: function() {
-      return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
-   },
-   getButtonText: function() {
-      return this.$store.state.showExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
-   }
- }
 }
 </script>
 

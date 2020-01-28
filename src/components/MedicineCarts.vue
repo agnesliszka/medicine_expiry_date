@@ -34,7 +34,6 @@ export default {
             'getMedicineNameInput',
             'getMedicineExpiryDateInput',
             'getMedicineList',
-            'getExpiredMedicineList'
         ])
     },
     methods: {
@@ -58,9 +57,6 @@ export default {
             isExpired = this.isMedicineExpired(expiryDate);
             if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
                 this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
-                if(isExpired === true){
-                    this.getExpiredMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
-                }
                 this.isMedicineExpired(expiryDate);
                 this.$store.state.medicineNameInput = '';
                 this.$store.state.medicineExpiryDateInput = '';
