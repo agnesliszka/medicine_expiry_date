@@ -117,6 +117,9 @@ export default {
   methods: {
    ...mapMutations([
             'setIsActive',
+            'setSortedByNameAscendigly',
+            'setSortedByDateAscendigly',
+            'setShowExpiredMedicineOnly'
         ]),
    isMedicineExpired: function(expiryDate) {
          let today = new Date();
@@ -190,7 +193,7 @@ export default {
        else if(!this.getSortedByNameAscendigly){
           this.sortMedicineListByNameDescendingly()
        }
-       this.$store.state.sortedByNameAscendigly = !this.$store.state.sortedByNameAscendigly;
+       this.$store.commit('setSortedByNameAscendigly');
     },
     changeSortedByDateFlag: function() {
        if(this.getSortedByDateAscendigly){
@@ -199,10 +202,10 @@ export default {
        else if(!this.getSortedByDateAscendigly){
           this.sortMedicineListByDateDescendingly()
        }
-       this.$store.state.sortedByDateAscendigly = !this.$store.state.sortedByDateAscendigly;
+       this.$store.commit('setSortedByDateAscendigly');
     },
     showExpiredMedicineOnly: function() {
-       this.$store.state.showExpiredMedicineOnly = !this.$store.state.showExpiredMedicineOnly;
+       this.$store.commit('setShowExpiredMedicineOnly');
     }
  },
 }

@@ -48,6 +48,15 @@ export const store = new Vuex.Store({
     mutations: {
       setIsActive: state => {
         state.isActive  = !state.isActive;
-      }
+      },
+      setSortedByNameAscendigly: state => {
+        state.sortedByNameAscendigly  = !state.sortedByNameAscendigly;
+      },
+      setSortedByDateAscendigly: state => {
+        state.sortedByDateAscendigly  = !state.sortedByDateAscendigly;
+      },
+      setShowExpiredMedicineOnly: state => {
+        state.showExpiredMedicineOnly  = !state.showExpiredMedicineOnly;
+      },
     }
 })
