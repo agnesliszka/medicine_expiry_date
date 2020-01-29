@@ -151,7 +151,7 @@ export default {
           return 1;
         return 0;
       }
-      return this.$store.state.medicineList.sort(compare);
+      return this.getMedicineList.sort(compare);
     },
     sortMedicineListByNameDescendingly: function() {
       function compare(a, b) {
@@ -161,7 +161,7 @@ export default {
           return -1;
         return 0;
       }
-      return this.$store.state.medicineList.sort(compare);
+      return this.getMedicineList.sort(compare);
     },
    sortMedicineListByDateAscendingly: function() {
       function compare(a, b) {
@@ -171,7 +171,7 @@ export default {
           return 1;
         return 0;
       }
-      return this.$store.state.medicineList.sort(compare);
+      return this.getMedicineList.sort(compare);
     },
     sortMedicineListByDateDescendingly: function() {
       function compare(a, b) {
@@ -181,7 +181,7 @@ export default {
           return -1;
         return 0;
       }
-      return this.$store.state.medicineList.sort(compare);
+      return this.getMedicineList.sort(compare);
     },
     changeSortedByNameFlag: function() {
        if(this.getSortedByNameAscendigly){
