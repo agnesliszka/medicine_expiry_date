@@ -5,7 +5,7 @@
         <label for="base">Base Color</label>
         <input type="color" name="base" v-model="$store.state.baseColor">
       </div>
-      <h1 :style="{color: $store.state.baseColor}">Medicine expiry date tracker</h1>
+      <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
       <div class="current-date">
          {{ $store.state.currentDate }}
       </div>
@@ -13,9 +13,9 @@
     <div class="container">
       <section>
          <div class="row justify-content-center">
-            <button v-show="$store.state.medicineList.length > 0" @click="showMedicineList" class="btn btn-danger">
-              <span v-if="$store.state.isActive">Hide Medicine List</span>
-              <span v-if="!$store.state.isActive">Show Medicine List</span>
+            <button v-show="getMedicineList.length > 0" @click="showMedicineList" class="btn btn-danger">
+              <span v-if="getIsActive">Hide Medicine List</span>
+              <span v-if="!getIsActive">Show Medicine List</span>
             </button>
             <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
             <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
@@ -26,11 +26,11 @@
       >
       </medicine-carts>
       </section>
-       <section class="container" v-show="!$store.state.showExpiredMedicineOnly" v-if="$store.state.isActive">
+       <section class="container" v-show="!getShowExpiredMedicineOnly" v-if="getIsActive">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in $store.state.medicineList" v-bind:key="medicine.id">
+                   <li class="row list-group-item border mt-2" v-for="medicine in getMedicineList" v-bind:key="medicine.id">
                       <medicine-cart
                       :medicine="medicine"
                       :isMedicineExpired="isMedicineExpired"
@@ -41,7 +41,7 @@
              </div>
           </div>
        </section>
-       <section class="container" v-show="$store.state.showExpiredMedicineOnly">
+       <section class="container" v-show="getShowExpiredMedicineOnly">
           <div class="row">
              <div class="offset-md-3 col-md-6 mt-3">
                 <ul class="list-group justify-content-center">
@@ -71,8 +71,10 @@ import MedicineCarts from './components/MedicineCarts.vue';
 import { mapGetters } from 'vuex';
 export default {
 // TODO: 
-// create file with data names
-// in showExpiredMedicineOnly function show just expired medicine - filter
+// finish getters and mutationsd
+// naming 
+// get rod of the jump of the list when data is being inputted and then entered
+// axios
 
   name: 'app',
   components: {
@@ -80,39 +82,29 @@ export default {
      'medicine-carts': MedicineCarts
  },
   computed: {
-      //   ...mapGetters([
-      //       'getIsActive',
-
-      //       'getMedicineList',
-
-      //       'getMedicineNameInput',
-      //       'getMedicineExpiryDateInput',
-            
-      //       'getMedicineNameInput',
-      //       'getExpiredMedicineList',
-            
-      //       'getMedicineNameInput',
-      //       'getCurrentDate',
-      //       'getShowExpiredMedicineOnly',
-      //       'getSortedByNameAscendigly',
-      //       'getSortedByDateAscendigly',
-      //       'getMedicineNameInput',
-            
-      //   ]),
+        ...mapGetters([
+               'getBaseColor',
+               'getIsActive',
+               'getMedicineList',
+               'getMedicineNameInput',
+               'getShowExpiredMedicineOnly',    
+               'getSortedByNameAscendigly',
+               'getSortedByDateAscendigly'
+        ]),
         getColor: function() {
             this.$store.state.baseColor = e.target.value
     },
         getNameButtonText: function() {
-            return this.$store.state.sortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
+            return this.getSortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
          },
         getDateButtonText: function() {
-            return this.$store.state.sortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
+            return this.getSortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
          },
         getButtonText: function() {
-            return this.$store.state.showExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
+            return this.getShowExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
          },
         expiredMedicineList: function() {
-            return this.$store.state.medicineList.filter(function(medicine) {
+            return this.getMedicineList.filter(function(medicine) {
             return medicine.expired
          })
         }
@@ -130,12 +122,11 @@ export default {
          medicineExpiryDate = medicineExpiryDate.getTime();
          if(medicineExpiryDate<today) {
                return true;  
-         }
-         else{
+         }else {
                return false;}
          },
    deleteMedicine: function(medicine) {
-      const index = this.$store.state.medicineList.indexOf(medicine);
+      const index = this.getMedicineList.indexOf(medicine);
       this.$store.state.medicineList.splice(index, 1);
    },
    showMedicineList: function() {
@@ -187,19 +178,19 @@ export default {
       return this.$store.state.medicineList.sort(compare);
     },
     changeSortedByNameFlag: function() {
-       if(this.$store.state.sortedByNameAscendigly){
+       if(this.getSortedByNameAscendigly){
          this.sortMedicineListByNameAscendingly()
        }
-       else if(!this.$store.state.sortedByNameDescendigly){
+       else if(!this.getSortedByNameAscendigly){
           this.sortMedicineListByNameDescendingly()
        }
        this.$store.state.sortedByNameAscendigly = !this.$store.state.sortedByNameAscendigly;
     },
     changeSortedByDateFlag: function() {
-       if(this.$store.state.sortedByDateAscendigly){
+       if(this.getSortedByDateAscendigly){
          this.sortMedicineListByDateAscendingly()
        }
-       else if(!this.$store.state.sortedByDateDescendigly){
+       else if(!this.getSortedByDateAscendigly){
           this.sortMedicineListByDateDescendingly()
        }
        this.$store.state.sortedByDateAscendigly = !this.$store.state.sortedByDateAscendigly;
