@@ -69,6 +69,8 @@ import moment from 'moment';
 import MedicineCart from './components/MedicineCart.vue';
 import MedicineCarts from './components/MedicineCarts.vue';
 import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
+
 export default {
 // TODO: 
 // finish getters and mutationsd
@@ -80,20 +82,23 @@ export default {
   components: {
      'medicine-cart': MedicineCart,
      'medicine-carts': MedicineCarts
- },
+  },
+  mounted() {
+     this.setCurrentDate();
+  },
   computed: {
         ...mapGetters([
-               'getBaseColor',
-               'getIsActive',
-               'getMedicineList',
-               'getMedicineNameInput',
-               'getShowExpiredMedicineOnly',    
-               'getSortedByNameAscendigly',
-               'getSortedByDateAscendigly'
+            'getBaseColor',
+            'getIsActive',
+            'getMedicineList',
+            'getMedicineNameInput',
+            'getShowExpiredMedicineOnly',    
+            'getSortedByNameAscendigly',
+            'getSortedByDateAscendigly'
         ]),
         getColor: function() {
             this.$store.state.baseColor = e.target.value
-    },
+        },
         getNameButtonText: function() {
             return this.getSortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
          },
@@ -109,10 +114,10 @@ export default {
          })
         }
     },
-  mounted() {
-     this.setCurrentDate();
-  },
   methods: {
+   ...mapMutations([
+            'setIsActive',
+        ]),
    isMedicineExpired: function(expiryDate) {
          let today = new Date();
          today.setHours(0,0,0,0);
@@ -130,7 +135,8 @@ export default {
       this.$store.state.medicineList.splice(index, 1);
    },
    showMedicineList: function() {
-      this.$store.state.isActive = !this.$store.state.isActive;
+      console.log("dziala")
+      this.$store.commit('setIsActive');
    },  
    setCurrentDate: function() {
       let todaysDate = new Date()

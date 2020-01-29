@@ -43,6 +43,11 @@ export const store = new Vuex.Store({
         },
       getBaseColor: state => {
         return state.baseColor;
-        },
-    } 
+        }
+    } ,
+    mutations: {
+      setIsActive: state => {
+        state.isActive  = !state.isActive;
+      }
+    }
 })

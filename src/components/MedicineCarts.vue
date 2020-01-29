@@ -37,20 +37,6 @@ export default {
         ])
     },
     methods: {
-        isMedicineExpired: function(expiryDate) {
-            let today = new Date();
-            today.setHours(0,0,0,0);
-            today = today.getTime();
-            let medicineExpiryDate = new Date(expiryDate);
-            medicineExpiryDate.setHours(0,0,0,0);
-            medicineExpiryDate = medicineExpiryDate.getTime();
-            if(medicineExpiryDate<today) {
-                return true;  
-            }
-            else{
-                return false;
-                }
-            },
         addMedicine: function(medicine, expiryDate, isExpired) {
             medicine = this.getMedicineNameInput;
             expiryDate = this.getMedicineExpiryDateInput;
