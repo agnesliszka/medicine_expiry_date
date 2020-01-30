@@ -7,7 +7,7 @@
       </div>
       <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
       <div class="current-date">
-         {{ $store.state.currentDate }}
+         {{ getCurrentDate }}
       </div>
     </div>
     <div class="container">
@@ -94,7 +94,8 @@ export default {
             'getMedicineNameInput',
             'getShowExpiredMedicineOnly',    
             'getSortedByNameAscendigly',
-            'getSortedByDateAscendigly'
+            'getSortedByDateAscendigly',
+            'getCurrentDate'
         ]),
         getColor: function() {
             this.$store.state.baseColor = e.target.value
@@ -140,7 +141,7 @@ export default {
    showMedicineList: function() {
       console.log("dziala")
       this.$store.commit('setIsActive');
-   },  
+   }, 
    setCurrentDate: function() {
       let todaysDate = new Date()
       todaysDate.setHours(0,0,0,0);
