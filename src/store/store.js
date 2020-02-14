@@ -58,5 +58,13 @@ export const store = new Vuex.Store({
       setShowExpiredMedicineOnly: state => {
         state.showExpiredMedicineOnly  = !state.showExpiredMedicineOnly;
       },
+      updateBaseColor: (state, payload) => {
+        state.baseColor = payload;
+      }
+    },
+    actions: {
+      updateBaseColor({commit}, payload) {
+        commit('updateBaseColor', payload);
+      }
     }
 })

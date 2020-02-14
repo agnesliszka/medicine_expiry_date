@@ -3,7 +3,8 @@
     <div class="header">
       <div class="controls">
         <label for="base">Base Color</label>
-        <input type="color" name="base" v-model="$store.state.baseColor">
+        <input type="color" name="base" :value="baseColor" @input="updateBaseColor">
+        <p>{{ baseColor }}</p>
       </div>
       <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
       <div class="current-date">
@@ -73,9 +74,8 @@ import { mapMutations } from 'vuex';
 
 export default {
 // TODO: 
-// finish getters and mutationsd
-// naming 
-// get rod of the jump of the list when data is being inputted and then entered
+// finish getters and mutations
+// get rid of the jump of the list when data is being inputted and then entered
 // axios
 
   name: 'app',
@@ -85,6 +85,7 @@ export default {
   },
   mounted() {
      this.setCurrentDate();
+     console.log(this.baseColor)
   },
   computed: {
         ...mapGetters([
@@ -95,11 +96,18 @@ export default {
             'getShowExpiredMedicineOnly',    
             'getSortedByNameAscendigly',
             'getSortedByDateAscendigly',
-            'getCurrentDate'
+            'getCurrentDate',
+            'getBaseColor'
         ]),
-        getColor: function() {
-            this.$store.state.baseColor = e.target.value
-        },
+        baseColor: function() {
+           return this.getBaseColor;
+         //   get() {
+         //       return this.getBaseColor;
+         //   },
+         //   set(baseColor) {
+         //      this.$store.dispatch('updateBaseColor', baseColor)
+         //   }
+        }, 
         getNameButtonText: function() {
             return this.getSortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
          },
@@ -120,8 +128,14 @@ export default {
             'setIsActive',
             'setSortedByNameAscendigly',
             'setSortedByDateAscendigly',
-            'setShowExpiredMedicineOnly'
+            'setShowExpiredMedicineOnly',
+            'updateBaseColor'
         ]),
+   updateBaseColor(event){
+      console.log(event.target.value)
+      console.log(this.$store)
+      this.$store.dispatch('updateBaseColor', event.target.value)
+   },
    isMedicineExpired: function(expiryDate) {
          let today = new Date();
          today.setHours(0,0,0,0);
