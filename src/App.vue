@@ -3,7 +3,8 @@
     <div class="header">
       <div class="controls">
         <label for="base">Base Color</label>
-        <input type="color" name="base" :value="baseColor" @input="updateBaseColor">
+        <input type="color" name="base" v-model="baseColor">
+        <!-- <input type="color" name="base" :value="baseColor" @input="updateBaseColor"> -->
         <p>{{ baseColor }}</p>
       </div>
       <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
@@ -99,14 +100,13 @@ export default {
             'getCurrentDate',
             'getBaseColor'
         ]),
-        baseColor: function() {
-           return this.getBaseColor;
-         //   get() {
-         //       return this.getBaseColor;
-         //   },
-         //   set(baseColor) {
-         //      this.$store.dispatch('updateBaseColor', baseColor)
-         //   }
+        baseColor:  {
+            get() {
+                  return this.getBaseColor;
+            },
+            set(baseColor) {
+               this.$store.dispatch('updateBaseColor', baseColor)
+            }
         }, 
         getNameButtonText: function() {
             return this.getSortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
@@ -131,11 +131,9 @@ export default {
             'setShowExpiredMedicineOnly',
             'updateBaseColor'
         ]),
-   updateBaseColor(event){
-      console.log(event.target.value)
-      console.log(this.$store)
-      this.$store.dispatch('updateBaseColor', event.target.value)
-   },
+   // updateBaseColor(event){
+   //    this.$store.dispatch('updateBaseColor', event.target.value)
+   // },
    isMedicineExpired: function(expiryDate) {
          let today = new Date();
          today.setHours(0,0,0,0);
