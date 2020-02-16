@@ -67,7 +67,6 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import moment from 'moment';
 import MedicineCart from './components/MedicineCart.vue';
 import MedicineCarts from './components/MedicineCarts.vue';
 import { mapGetters } from 'vuex';
@@ -75,7 +74,6 @@ import { mapMutations } from 'vuex';
 
 export default {
 // TODO: 
-// finish getters and mutations
 // get rid of the jump of the list when data is being inputted and then entered
 // axios
 
@@ -86,7 +84,6 @@ export default {
   },
   mounted() {
      this.setCurrentDate();
-     console.log(this.baseColor)
   },
   computed: {
         ...mapGetters([
@@ -129,7 +126,8 @@ export default {
             'setSortedByNameAscendigly',
             'setSortedByDateAscendigly',
             'setShowExpiredMedicineOnly',
-            'updateBaseColor'
+            'updateBaseColor',
+            'setCurrentDate'
         ]),
    // updateBaseColor(event){
    //    this.$store.dispatch('updateBaseColor', event.target.value)
@@ -151,14 +149,13 @@ export default {
       this.$store.state.medicineList.splice(index, 1);
    },
    showMedicineList: function() {
-      console.log("dziala")
       this.$store.commit('setIsActive');
    }, 
-   setCurrentDate: function() {
-      let todaysDate = new Date()
-      todaysDate.setHours(0,0,0,0);
-      this.$store.state.currentDate = moment(todaysDate).format('DD/MM/YYYY')
-   },
+   // setCurrentDate: function() {
+   //    let todaysDate = new Date()
+   //    todaysDate.setHours(0,0,0,0);
+   //    this.$store.state.currentDate = moment(todaysDate).format('DD/MM/YYYY')
+   // },
    sortMedicineListByNameAscendingly: function() {
       function compare(a, b) {
         if (a.name < b.name)
@@ -200,19 +197,19 @@ export default {
       return this.getMedicineList.sort(compare);
     },
     changeSortedByNameFlag: function() {
-       if(this.getSortedByNameAscendigly){
+       if (this.getSortedByNameAscendigly){
          this.sortMedicineListByNameAscendingly()
        }
-       else if(!this.getSortedByNameAscendigly){
+       else if (!this.getSortedByNameAscendigly){
           this.sortMedicineListByNameDescendingly()
        }
        this.$store.commit('setSortedByNameAscendigly');
     },
     changeSortedByDateFlag: function() {
-       if(this.getSortedByDateAscendigly){
+       if (this.getSortedByDateAscendigly){
          this.sortMedicineListByDateAscendingly()
        }
-       else if(!this.getSortedByDateAscendigly){
+       else if (!this.getSortedByDateAscendigly){
           this.sortMedicineListByDateDescendingly()
        }
        this.$store.commit('setSortedByDateAscendigly');

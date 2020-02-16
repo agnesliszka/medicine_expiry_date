@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -60,6 +61,11 @@ export const store = new Vuex.Store({
       },
       updateBaseColor: (state, payload) => {
         state.baseColor = payload;
+      },
+      setCurrentDate: state => {
+        let todaysDate = new Date()
+        todaysDate.setHours(0,0,0,0);
+        state.currentDate = moment(todaysDate).format('DD/MM/YYYY')
       }
     },
     actions: {
