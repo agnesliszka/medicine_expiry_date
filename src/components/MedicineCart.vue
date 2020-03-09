@@ -7,6 +7,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 export default {
   name: 'medicine-carts',
   props: ["medicine", "isMedicineExpired"],
@@ -17,7 +18,10 @@ export default {
     },
   methods: {
   deleteMedicine: function(medicine) {
-      const index = this.getMedicineList.indexOf(medicine);
+      const index = this.$store.state.medicineList.indexOf(medicine);
+      // axios.delete('https://medicineexpirydateproject.firebaseio.com/medicineList.json/${index}')
+      //   .then(res => this.medicineList = this.medicineList.filter(medicine => medicine.index!== index))
+      //   .catch(err => console.log(err))
       this.getMedicineList.splice(index, 1);
    },
   }

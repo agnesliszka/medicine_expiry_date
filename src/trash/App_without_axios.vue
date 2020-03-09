@@ -71,7 +71,6 @@ import MedicineCart from './components/MedicineCart.vue';
 import MedicineCarts from './components/MedicineCarts.vue';
 import { mapGetters } from 'vuex';
 import { mapMutations } from 'vuex';
-import axios from 'axios';
 
 export default {
 // TODO: 
@@ -85,22 +84,6 @@ export default {
   },
   mounted() {
      this.setCurrentDate();
-  },
-  created() {
-     axios.get('https://medicineexpirydateproject.firebaseio.com/medicineList.json')
-      .then(res => {
-         console.log(res);
-         const data = res.data;
-         const medicineList = []
-         for (let key in data) {
-            const medicine = data[key]
-            medicine.id = key
-            medicineList.push(medicine)
-         }
-         this.$store.state.medicineList = medicineList
-      } 
-      )
-      .catch(err => console.log(err));
   },
   computed: {
         ...mapGetters([

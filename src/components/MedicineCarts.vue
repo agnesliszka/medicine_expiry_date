@@ -26,6 +26,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 export default {
     name: 'medicine-carts',
     props: ["isMedicineExpired"],
@@ -42,7 +43,10 @@ export default {
             expiryDate = this.getMedicineExpiryDateInput;
             isExpired = this.isMedicineExpired(expiryDate);
             if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
-                this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+                // this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+                axios.post('https://medicineexpirydateproject.firebaseio.com/medicineList.json', {name: medicine, date: expiryDate, expired: isExpired})
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
                 this.isMedicineExpired(expiryDate);
                 this.$store.state.medicineNameInput = '';
                 this.$store.state.medicineExpiryDateInput = '';
