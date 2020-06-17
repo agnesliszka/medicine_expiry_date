@@ -18,8 +18,8 @@ export default {
     },
   methods: {
   deleteMedicine: function(medicine) {
-      const index = this.$store.state.medicineList.indexOf(medicine);
-      const idx = this.$store.state.medicineList[index].id
+      const index = this.getMedicineList.indexOf(medicine);
+      const idx = this.getMedicineList[index].id
       axios.delete(`https://medicineexpirydateproject.firebaseio.com/medicineList/${idx}`+'.json?auth='+'2pc6k4A0Tv5DR80pYc9enh0fTOBBewNAKfRcZD1N')
         .then(res => window.location.reload())
         .catch(err => console.log(err))

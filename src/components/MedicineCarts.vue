@@ -52,8 +52,7 @@ export default {
                 this.isMedicineExpired(expiryDate);
                 this.$store.state.medicineNameInput = '';
                 this.$store.state.medicineExpiryDateInput = '';
-                this.$refs.input.blur();
-                
+                this.$refs.input.blur();       
         }  else return;
     },
   }

@@ -4,7 +4,6 @@
       <div class="controls">
         <label for="base">Base Color</label>
         <input type="color" name="base" v-model="baseColor">
-        <!-- <input type="color" name="base" :value="baseColor" @input="updateBaseColor"> -->
         <p>{{ baseColor }}</p>
       </div>
       <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
@@ -74,9 +73,6 @@ import { mapMutations } from 'vuex';
 import axios from 'axios';
 
 export default {
-// TODO: 
-// get rid of the jump of the list when data is being inputted and then entered
-
   name: 'app',
   components: {
      'medicine-cart': MedicineCart,
@@ -145,9 +141,6 @@ export default {
             'updateBaseColor',
             'setCurrentDate'
         ]),
-   // updateBaseColor(event){
-   //    this.$store.dispatch('updateBaseColor', event.target.value)
-   // },
    isMedicineExpired: function(expiryDate) {
          let today = new Date();
          today.setHours(0,0,0,0);
@@ -160,18 +153,9 @@ export default {
          }else {
                return false;}
          },
-   deleteMedicine: function(medicine) {
-      const index = this.getMedicineList.indexOf(medicine);
-      this.$store.state.medicineList.splice(index, 1);
-   },
    showMedicineList: function() {
       this.$store.commit('setIsActive');
    }, 
-   // setCurrentDate: function() {
-   //    let todaysDate = new Date()
-   //    todaysDate.setHours(0,0,0,0);
-   //    this.$store.state.currentDate = moment(todaysDate).format('DD/MM/YYYY')
-   // },
    sortMedicineListByNameAscendingly: function() {
       function compare(a, b) {
         if (a.name < b.name)
