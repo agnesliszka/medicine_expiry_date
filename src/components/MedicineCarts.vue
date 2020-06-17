@@ -44,13 +44,16 @@ export default {
             isExpired = this.isMedicineExpired(expiryDate);
             if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
                 // this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
-                axios.post('https://medicineexpirydateproject.firebaseio.com/medicineList.json', {name: medicine, date: expiryDate, expired: isExpired})
-                    .then(res => console.log(res))
+                const medicineDetails = {name: medicine, date: expiryDate, expired: isExpired}
+                axios.post('https://medicineexpirydateproject.firebaseio.com/medicineList.json', medicineDetails)
+                    .then(res => {console.log(res) 
+                                window.location.reload()})
                     .catch(err => console.log(err));
                 this.isMedicineExpired(expiryDate);
                 this.$store.state.medicineNameInput = '';
                 this.$store.state.medicineExpiryDateInput = '';
                 this.$refs.input.blur();
+                
         }  else return;
     },
   }

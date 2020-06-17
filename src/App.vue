@@ -76,7 +76,6 @@ import axios from 'axios';
 export default {
 // TODO: 
 // get rid of the jump of the list when data is being inputted and then entered
-// axios
 
   name: 'app',
   components: {
