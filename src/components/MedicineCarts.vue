@@ -58,3 +58,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+    .justify-content-center{
+        height: 50px;
+    }
+</style>
