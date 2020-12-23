@@ -50,6 +50,15 @@ export const store = new Vuex.Store({
       setIsActive: state => {
         state.isActive  = !state.isActive;
       },
+      setMedicineList: (state, payload) => {
+        state.medicineList = payload
+      },
+      clearMedicineInput: (state) => {
+        state.medicineNameInput = ""
+      },
+      clearMedicineExpiryDateInput: (state) => {
+        state.medicineNameInput = ""
+      },
       setSortedByNameAscendigly: state => {
         state.sortedByNameAscendigly  = !state.sortedByNameAscendigly;
       },

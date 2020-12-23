@@ -26,7 +26,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 import axios from 'axios';
+
 export default {
     name: 'medicine-carts',
     props: ["isMedicineExpired"],
@@ -38,10 +40,14 @@ export default {
         ])
     },
     methods: {
-        addMedicine: function(medicine, expiryDate, isExpired) {
-            medicine = this.getMedicineNameInput;
-            expiryDate = this.getMedicineExpiryDateInput;
-            isExpired = this.isMedicineExpired(expiryDate);
+         ...mapMutations([
+            'clearMedicineInput',
+            'clearMedicineExpiryDateInput',
+         ]),
+        addMedicine: function() {
+            const medicine = this.getMedicineNameInput;
+            const expiryDate = this.getMedicineExpiryDateInput;
+            const isExpired = this.isMedicineExpired(expiryDate);
             if (medicine.length >= 3 && expiryDate.length === 10 && medicine.trim() !== ""){
                 // this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
                 const medicineDetails = {name: medicine, date: expiryDate, expired: isExpired}
@@ -50,8 +56,8 @@ export default {
                                 window.location.reload()})
                     .catch(err => console.log(err));
                 this.isMedicineExpired(expiryDate);
-                this.$store.state.medicineNameInput = '';
-                this.$store.state.medicineExpiryDateInput = '';
+                this.clearMedicineInput;
+                this.clearMedicineExpiryDateInput;
                 this.$refs.input.blur();       
         }  else return;
     },

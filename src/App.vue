@@ -92,7 +92,7 @@ export default {
             medicine.id = key
             medicineList.push(medicine)
          }
-         this.$store.state.medicineList = medicineList
+         this.setMedicineList(medicineList);
       } 
       )
       .catch(err => console.log(err));
@@ -135,6 +135,7 @@ export default {
   methods: {
    ...mapMutations([
             'setIsActive',
+            'setMedicineList',
             'setSortedByNameAscendigly',
             'setSortedByDateAscendigly',
             'setShowExpiredMedicineOnly',
