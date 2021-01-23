@@ -283,17 +283,7 @@ export default {
       this.$store.commit("setFilteredDataShown");
       const beginningDate = this.timerange[0].getTime();
       const endDate = this.timerange[1].getTime();
-      console.log("@this.getMedicineList");
       const filteredElements = this.getMedicineList.filter((element) => {
-        console.log("@element.date");
-        console.log(new Date(element.date).getTime());
-        //   console.log(typeof element.date);
-        console.log("@beginningDate");
-        console.log(beginningDate);
-        console.log(typeof beginningDate);
-        console.log("@endDate");
-        console.log(endDate);
-        console.log(typeof element.date);
         if (
           new Date(element.date).getTime() > beginningDate &&
           new Date(element.date).getTime() < endDate
@@ -301,8 +291,6 @@ export default {
           return element;
         }
       });
-      console.log("@filteredElements");
-      console.log(filteredElements);
       return filteredElements;
     },
   },
