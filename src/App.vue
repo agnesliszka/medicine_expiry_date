@@ -36,20 +36,22 @@
             {{ getButtonText }}
           </button>
         </div>
-        <div class="block">
-          <div :style="{ color: getBaseColor }">Select date range:</div>
-          <el-date-picker
-            style="margin-bottom: 20px"
-            v-model="timerange"
-            type="daterange"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-          >
-          </el-date-picker>
-        </div>
+
         <medicine-carts :isMedicineExpired="isMedicineExpired">
         </medicine-carts>
       </section>
+      <div class="block">
+        <div>Select date range:</div>
+        <el-date-picker
+          @change="filterResults"
+          style="margin-bottom: 20px"
+          v-model="timerange"
+          type="daterange"
+          start-placeholder="Start date"
+          end-placeholder="End date"
+        >
+        </el-date-picker>
+      </div>
       <section
         class="container"
         v-show="!getShowExpiredMedicineOnly"
@@ -61,6 +63,25 @@
               <li
                 class="row list-group-item border mt-2"
                 v-for="medicine in getMedicineList"
+                v-bind:key="medicine.id"
+              >
+                <medicine-cart
+                  :medicine="medicine"
+                  :isMedicineExpired="isMedicineExpired"
+                >
+                </medicine-cart>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section class="container" v-if="getFilteredDataShown">
+        <div class="row">
+          <div class="offset-md-3 col-md-6 mt-3">
+            <ul class="list-group justify-content-center">
+              <li
+                class="row list-group-item border mt-2"
+                v-for="medicine in filterResults()"
                 v-bind:key="medicine.id"
               >
                 <medicine-cart
@@ -144,6 +165,7 @@ export default {
       "getMedicineList",
       "getMedicineNameInput",
       "getShowExpiredMedicineOnly",
+      "getFilteredDataShown",
       "getSortedByNameAscendigly",
       "getSortedByDateAscendigly",
       "getCurrentDate",
@@ -181,6 +203,7 @@ export default {
   methods: {
     ...mapMutations([
       "setIsActive",
+      "setFilteredDataShown",
       "setMedicineList",
       "setSortedByNameAscendigly",
       "setSortedByDateAscendigly",
@@ -254,6 +277,33 @@ export default {
     },
     showExpiredMedicineOnly: function () {
       this.$store.commit("setShowExpiredMedicineOnly");
+    },
+    filterResults: function () {
+      this.$store.commit("setIsActive");
+      this.$store.commit("setFilteredDataShown");
+      const beginningDate = this.timerange[0].getTime();
+      const endDate = this.timerange[1].getTime();
+      console.log("@this.getMedicineList");
+      const filteredElements = this.getMedicineList.filter((element) => {
+        console.log("@element.date");
+        console.log(new Date(element.date).getTime());
+        //   console.log(typeof element.date);
+        console.log("@beginningDate");
+        console.log(beginningDate);
+        console.log(typeof beginningDate);
+        console.log("@endDate");
+        console.log(endDate);
+        console.log(typeof element.date);
+        if (
+          new Date(element.date).getTime() > beginningDate &&
+          new Date(element.date).getTime() < endDate
+        ) {
+          return element;
+        }
+      });
+      console.log("@filteredElements");
+      console.log(filteredElements);
+      return filteredElements;
     },
   },
 };
