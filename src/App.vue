@@ -3,223 +3,260 @@
     <div class="header">
       <div class="controls">
         <label for="base">Base Color</label>
-        <input type="color" name="base" v-model="baseColor">
+        <input type="color" name="base" v-model="baseColor" />
         <p>{{ baseColor }}</p>
       </div>
-      <h1 :style="{color: getBaseColor}">Medicine expiry date tracker</h1>
+      <h1 :style="{ color: getBaseColor }">Medicine expiry date tracker</h1>
       <div class="current-date">
-         {{ getCurrentDate }}
+        {{ getCurrentDate }}
       </div>
     </div>
     <div class="container">
       <section>
-         <div class="row justify-content-center">
-            <button v-show="getMedicineList.length > 0" @click="showMedicineList" class="btn btn-danger">
-              <span v-if="getIsActive">Hide Medicine List</span>
-              <span v-if="!getIsActive">Show Medicine List</span>
-            </button>
-            <button @click="changeSortedByNameFlag" class="btn btn-dark">{{ getNameButtonText }}</button>
-            <button @click="changeSortedByDateFlag" class="btn btn-dark">{{ getDateButtonText }}</button>
-            <button v-show="expiredMedicineList.length > 0" @click="showExpiredMedicineOnly" class="btn btn-danger">{{ getButtonText }} </button>
-         </div>
-      <medicine-carts
-         :isMedicineExpired="isMedicineExpired"
-      >
-      </medicine-carts>
+        <div class="row justify-content-center">
+          <button
+            v-show="getMedicineList.length > 0"
+            @click="showMedicineList"
+            class="btn btn-danger"
+          >
+            <span v-if="getIsActive">Hide Medicine List</span>
+            <span v-if="!getIsActive">Show Medicine List</span>
+          </button>
+          <button @click="changeSortedByNameFlag" class="btn btn-dark">
+            {{ getNameButtonText }}
+          </button>
+          <button @click="changeSortedByDateFlag" class="btn btn-dark">
+            {{ getDateButtonText }}
+          </button>
+          <button
+            v-show="expiredMedicineList.length > 0"
+            @click="showExpiredMedicineOnly"
+            class="btn btn-danger"
+          >
+            {{ getButtonText }}
+          </button>
+        </div>
+        <div class="block">
+          <div :style="{ color: getBaseColor }">Select date range:</div>
+          <el-date-picker
+            style="margin-bottom: 20px"
+            v-model="timerange"
+            type="daterange"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+          >
+          </el-date-picker>
+        </div>
+        <medicine-carts :isMedicineExpired="isMedicineExpired">
+        </medicine-carts>
       </section>
-       <section class="container" v-show="!getShowExpiredMedicineOnly" v-if="getIsActive">
-          <div class="row">
-             <div class="offset-md-3 col-md-6 mt-3">
-                <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in getMedicineList" v-bind:key="medicine.id">
-                      <medicine-cart
-                      :medicine="medicine"
-                      :isMedicineExpired="isMedicineExpired"
-                      >
-                      </medicine-cart>
-                   </li>
-                </ul>
-             </div>
+      <section
+        class="container"
+        v-show="!getShowExpiredMedicineOnly"
+        v-if="getIsActive"
+      >
+        <div class="row">
+          <div class="offset-md-3 col-md-6 mt-3">
+            <ul class="list-group justify-content-center">
+              <li
+                class="row list-group-item border mt-2"
+                v-for="medicine in getMedicineList"
+                v-bind:key="medicine.id"
+              >
+                <medicine-cart
+                  :medicine="medicine"
+                  :isMedicineExpired="isMedicineExpired"
+                >
+                </medicine-cart>
+              </li>
+            </ul>
           </div>
-       </section>
-       <section class="container" v-show="getShowExpiredMedicineOnly">
-          <div class="row">
-             <div class="offset-md-3 col-md-6 mt-3">
-                <ul class="list-group justify-content-center">
-                   <li class="row list-group-item border mt-2" v-for="medicine in expiredMedicineList" v-bind:key="medicine.id">
-                      <medicine-cart
-                      :medicine="medicine"
-                      :isMedicineExpired="isMedicineExpired"
-                      >
-                      </medicine-cart>
-                   </li>
-                </ul>
-             </div>
+        </div>
+      </section>
+      <section class="container" v-show="getShowExpiredMedicineOnly">
+        <div class="row">
+          <div class="offset-md-3 col-md-6 mt-3">
+            <ul class="list-group justify-content-center">
+              <li
+                class="row list-group-item border mt-2"
+                v-for="medicine in expiredMedicineList"
+                v-bind:key="medicine.id"
+              >
+                <medicine-cart
+                  :medicine="medicine"
+                  :isMedicineExpired="isMedicineExpired"
+                >
+                </medicine-cart>
+              </li>
+            </ul>
           </div>
-       </section>
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import MedicineCart from './components/MedicineCart.vue';
-import MedicineCarts from './components/MedicineCarts.vue';
-import { mapGetters } from 'vuex';
-import { mapMutations } from 'vuex';
-import axios from 'axios';
+import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+import MedicineCart from "./components/MedicineCart.vue";
+import MedicineCarts from "./components/MedicineCarts.vue";
+import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import axios from "axios";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-     'medicine-cart': MedicineCart,
-     'medicine-carts': MedicineCarts
+    "medicine-cart": MedicineCart,
+    "medicine-carts": MedicineCarts,
+  },
+  data() {
+    return {
+      timerange: "",
+    };
   },
   mounted() {
-     this.setCurrentDate();
+    this.setCurrentDate();
   },
   created() {
-     axios.get('https://medicineexpirydateproject.firebaseio.com/medicineList.json')
-      .then(res => {
-         console.log(res);
-         const data = res.data;
-         const medicineList = []
-         for (let key in data) {
-            const medicine = data[key]
-            medicine.id = key
-            medicineList.push(medicine)
-         }
-         this.setMedicineList(medicineList);
-      } 
-      )
-      .catch(err => console.log(err));
+    axios
+      .get("https://medicineexpirydateproject.firebaseio.com/medicineList.json")
+      .then((res) => {
+        console.log(res);
+        const data = res.data;
+        const medicineList = [];
+        for (let key in data) {
+          const medicine = data[key];
+          medicine.id = key;
+          medicineList.push(medicine);
+        }
+        this.setMedicineList(medicineList);
+      })
+      .catch((err) => console.log(err));
   },
   computed: {
-        ...mapGetters([
-            'getBaseColor',
-            'getIsActive',
-            'getMedicineList',
-            'getMedicineNameInput',
-            'getShowExpiredMedicineOnly',    
-            'getSortedByNameAscendigly',
-            'getSortedByDateAscendigly',
-            'getCurrentDate',
-            'getBaseColor'
-        ]),
-        baseColor:  {
-            get() {
-                  return this.getBaseColor;
-            },
-            set(baseColor) {
-               this.$store.dispatch('updateBaseColor', baseColor)
-            }
-        }, 
-        getNameButtonText: function() {
-            return this.getSortedByNameAscendigly ? 'Sort by name ascendingly' : 'Sort by name descendingly'
-         },
-        getDateButtonText: function() {
-            return this.getSortedByDateAscendigly ? 'Sort by date ascendingly' : 'Sort by date descendingly'
-         },
-        getButtonText: function() {
-            return this.getShowExpiredMedicineOnly ? 'Show all medicines' : 'Show expired medicine only'
-         },
-        expiredMedicineList: function() {
-            return this.getMedicineList.filter(function(medicine) {
-            return medicine.expired
-         })
-        }
+    ...mapGetters([
+      "getBaseColor",
+      "getIsActive",
+      "getMedicineList",
+      "getMedicineNameInput",
+      "getShowExpiredMedicineOnly",
+      "getSortedByNameAscendigly",
+      "getSortedByDateAscendigly",
+      "getCurrentDate",
+      "getBaseColor",
+    ]),
+    baseColor: {
+      get() {
+        return this.getBaseColor;
+      },
+      set(baseColor) {
+        this.$store.dispatch("updateBaseColor", baseColor);
+      },
     },
+    getNameButtonText: function () {
+      return this.getSortedByNameAscendigly
+        ? "Sort by name ascendingly"
+        : "Sort by name descendingly";
+    },
+    getDateButtonText: function () {
+      return this.getSortedByDateAscendigly
+        ? "Sort by date ascendingly"
+        : "Sort by date descendingly";
+    },
+    getButtonText: function () {
+      return this.getShowExpiredMedicineOnly
+        ? "Show all medicines"
+        : "Show expired medicine only";
+    },
+    expiredMedicineList: function () {
+      return this.getMedicineList.filter(function (medicine) {
+        return medicine.expired;
+      });
+    },
+  },
   methods: {
-   ...mapMutations([
-            'setIsActive',
-            'setMedicineList',
-            'setSortedByNameAscendigly',
-            'setSortedByDateAscendigly',
-            'setShowExpiredMedicineOnly',
-            'updateBaseColor',
-            'setCurrentDate'
-        ]),
-   isMedicineExpired: function(expiryDate) {
-         let today = new Date();
-         today.setHours(0,0,0,0);
-         today = today.getTime();
-         let medicineExpiryDate = new Date(expiryDate);
-         medicineExpiryDate.setHours(0,0,0,0);
-         medicineExpiryDate = medicineExpiryDate.getTime();
-         if(medicineExpiryDate<today) {
-               return true;  
-         }else {
-               return false;}
-         },
-   showMedicineList: function() {
-      this.$store.commit('setIsActive');
-   }, 
-   sortMedicineListByNameAscendingly: function() {
+    ...mapMutations([
+      "setIsActive",
+      "setMedicineList",
+      "setSortedByNameAscendigly",
+      "setSortedByDateAscendigly",
+      "setShowExpiredMedicineOnly",
+      "updateBaseColor",
+      "setCurrentDate",
+    ]),
+    isMedicineExpired: function (expiryDate) {
+      let today = new Date();
+      today.setHours(0, 0, 0, 0);
+      today = today.getTime();
+      let medicineExpiryDate = new Date(expiryDate);
+      medicineExpiryDate.setHours(0, 0, 0, 0);
+      medicineExpiryDate = medicineExpiryDate.getTime();
+      if (medicineExpiryDate < today) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    showMedicineList: function () {
+      this.$store.commit("setIsActive");
+    },
+    sortMedicineListByNameAscendingly: function () {
       function compare(a, b) {
-        if (a.name < b.name)
-          return -1;
-        if (a.name > b.name)
-          return 1;
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
         return 0;
       }
       return this.getMedicineList.sort(compare);
     },
-    sortMedicineListByNameDescendingly: function() {
+    sortMedicineListByNameDescendingly: function () {
       function compare(a, b) {
-        if (a.name < b.name)
-          return 1;
-        if (a.name > b.name)
-          return -1;
+        if (a.name < b.name) return 1;
+        if (a.name > b.name) return -1;
         return 0;
       }
       return this.getMedicineList.sort(compare);
     },
-   sortMedicineListByDateAscendingly: function() {
+    sortMedicineListByDateAscendingly: function () {
       function compare(a, b) {
-        if (a.date < b.date)
-          return -1;
-        if (a.date > b.date)
-          return 1;
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
         return 0;
       }
       return this.getMedicineList.sort(compare);
     },
-    sortMedicineListByDateDescendingly: function() {
+    sortMedicineListByDateDescendingly: function () {
       function compare(a, b) {
-        if (a.date < b.date)
-          return 1;
-        if (a.date > b.date)
-          return -1;
+        if (a.date < b.date) return 1;
+        if (a.date > b.date) return -1;
         return 0;
       }
       return this.getMedicineList.sort(compare);
     },
-    changeSortedByNameFlag: function() {
-       if (this.getSortedByNameAscendigly){
-         this.sortMedicineListByNameAscendingly()
-       }
-       else if (!this.getSortedByNameAscendigly){
-          this.sortMedicineListByNameDescendingly()
-       }
-       this.$store.commit('setSortedByNameAscendigly');
+    changeSortedByNameFlag: function () {
+      if (this.getSortedByNameAscendigly) {
+        this.sortMedicineListByNameAscendingly();
+      } else if (!this.getSortedByNameAscendigly) {
+        this.sortMedicineListByNameDescendingly();
+      }
+      this.$store.commit("setSortedByNameAscendigly");
     },
-    changeSortedByDateFlag: function() {
-       if (this.getSortedByDateAscendigly){
-         this.sortMedicineListByDateAscendingly()
-       }
-       else if (!this.getSortedByDateAscendigly){
-          this.sortMedicineListByDateDescendingly()
-       }
-       this.$store.commit('setSortedByDateAscendigly');
+    changeSortedByDateFlag: function () {
+      if (this.getSortedByDateAscendigly) {
+        this.sortMedicineListByDateAscendingly();
+      } else if (!this.getSortedByDateAscendigly) {
+        this.sortMedicineListByDateDescendingly();
+      }
+      this.$store.commit("setSortedByDateAscendigly");
     },
-    showExpiredMedicineOnly: function() {
-       this.$store.commit('setShowExpiredMedicineOnly');
-    }
- },
-}
+    showExpiredMedicineOnly: function () {
+      this.$store.commit("setShowExpiredMedicineOnly");
+    },
+  },
+};
 </script>
 
 <style>
@@ -234,19 +271,19 @@ export default {
 }
 
 .justify-content-center {
-   margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 button {
-   margin-right: 10px;
+  margin-right: 10px;
 }
 
 .header {
-   display: flex;
-   height: 10vh;
-   align-items: center;
-   justify-content: center;
-   flex-grow: 1;
+  display: flex;
+  height: 10vh;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 h1 {
@@ -256,39 +293,39 @@ h1 {
 }
 
 .controls {
-   height: 30px;
-   display: flex;
-   align-items: center;
-   justify-content: flex-start;
-   margin-top: 10px;
-   margin-bottom: 10px;
-   margin-left: 10px;
-   flex-grow: 1;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  flex-grow: 1;
 }
 
 .current-date {
-   display: flex;
-   flex-grow: 1;
-   justify-content: flex-end;
-   margin-right: 20px;
-   color: white;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  margin-right: 20px;
+  color: white;
 }
 
 label {
-   color: white;
-   margin-top: 10px;
-   margin-right: 10px;
+  color: white;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 .input-box {
-    height: 50px;
-    margin-right: 10px;
-    width: 300px;
-    text-align: center;
+  height: 50px;
+  margin-right: 10px;
+  width: 300px;
+  text-align: center;
 }
 
 button {
-   height: 50px;
+  height: 50px;
 }
 
 ul {
@@ -306,16 +343,15 @@ li {
 }
 
 .validation {
-   color: white;
-   text-align: left;
+  color: white;
+  text-align: left;
 }
 
 input ~ p {
-   display: none;
+  display: none;
 }
 
 input:focus ~ p {
-   display: block;
+  display: block;
 }
-
 </style>
