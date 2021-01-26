@@ -41,7 +41,9 @@
         </medicine-carts>
       </section>
       <div class="block">
-        <div>Select date range:</div>
+        <div :style="{ color: getBaseColor }" style="margin-top: 50px">
+          Select date range:
+        </div>
         <el-date-picker
           @change="filterResults"
           style="margin-bottom: 20px"

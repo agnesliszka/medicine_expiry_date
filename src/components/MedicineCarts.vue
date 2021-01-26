@@ -1,47 +1,36 @@
 <template>
-  <div class="row justify-content-center">
-    <div>
-      <input
-        ref="input"
-        type="text"
-        class="input-box"
-        v-model="$store.state.medicineNameInput"
-        v-on:keydown.enter.prevent="addMedicine"
-        placeholder="Input a medicine"
-      />
-      <p
-        class="validation"
-        v-if="getMedicineNameInput === '' || getMedicineNameInput.trim() === ''"
-      >
-        This field cannot be empty.
-      </p>
-      <p class="validation" v-else-if="getMedicineNameInput.length < 3">
-        You need to input at least three characters.
-      </p>
-    </div>
-    <div>
-      <!-- <el-date-picker
-        ref="input"
-        v-model="$store.state.medicineExpiryDateInput"
-        type="date"
-        class="input-box"
-        v-on:keydown.enter.prevent="addMedicine"
-        placeholder="Input expiry date"
-      >
-      </el-date-picker> -->
-      <input
-        ref="input"
-        type="date"
-        class="input-box"
-        v-model="$store.state.medicineExpiryDateInput"
-        v-on:keydown.enter.prevent="addMedicine"
-        placeholder="Input expiry date"
-      />
-      <p class="validation" v-if="getMedicineExpiryDateInput === ''">
-        Please input a valid date.
-      </p>
-    </div>
+  <form @submit.prevent class="row justify-content-center">
+    <input
+      ref="input"
+      type="text"
+      class="input-box"
+      style="display: block"
+      v-model="$store.state.medicineNameInput"
+      v-on:keydown.enter.prevent="addMedicine"
+      placeholder="Input a medicine"
+    />
+    <p
+      class="validation"
+      v-if="getMedicineNameInput === '' || getMedicineNameInput.trim() === ''"
+    >
+      This field cannot be empty.
+    </p>
+    <p class="validation" v-else-if="getMedicineNameInput.length < 3">
+      You need to input at least three characters.
+    </p>
+    <input
+      ref="input"
+      type="date"
+      class="input-box"
+      v-model="$store.state.medicineExpiryDateInput"
+      v-on:keydown.enter.prevent="addMedicine"
+      placeholder="Input expiry date"
+    />
+    <p class="validation" v-if="getMedicineExpiryDateInput === ''">
+      Please input a valid date.
+    </p>
     <button
+      type="submit"
       v-if="
         getMedicineNameInput.length >= 3 &&
         getMedicineExpiryDateInput.length === 10
@@ -51,7 +40,7 @@
     >
       Add a medicine
     </button>
-  </div>
+  </form>
 </template>
 <script>
 import { mapGetters } from "vuex";
