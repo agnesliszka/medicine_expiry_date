@@ -54,8 +54,14 @@ export const store = new Vuex.Store({
     setIsActive: state => {
       state.isActive = !state.isActive;
     },
-    setFilteredDataShown: state => {
+    setIsActiveToFalse: state => {
+      state.isActive = false;
+    },
+    setFilteredDataShownToTrue: state => {
       state.filteredDataShown = true;
+    },
+    setFilteredDataShownToFalse: state => {
+      state.filteredDataShown = false;
     },
     setMedicineList: (state, payload) => {
       state.medicineList = payload;

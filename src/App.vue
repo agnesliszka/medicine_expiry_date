@@ -26,7 +26,7 @@
             {{ getNameButtonText }}
           </button>
           <button @click="changeSortedByDateFlag" class="btn btn-dark">
-            {{ getDateButtonText }}
+            {{ getTimeButtonText }}
           </button>
           <button
             v-show="expiredMedicineList.length > 0"
@@ -186,7 +186,7 @@ export default {
         ? "Sort by name ascendingly"
         : "Sort by name descendingly";
     },
-    getDateButtonText: function() {
+    getTimeButtonText: function() {
       return this.getSortedByDateAscendigly
         ? "Sort by date ascendingly"
         : "Sort by date descendingly";
@@ -205,7 +205,9 @@ export default {
   methods: {
     ...mapMutations([
       "setIsActive",
-      "setFilteredDataShown",
+      "setIsActiveToFalse",
+      "setFilteredDataShownToTrue",
+      "setFilteredDataShownToFalse",
       "setMedicineList",
       "setSortedByNameAscendigly",
       "setSortedByDateAscendigly",
@@ -227,6 +229,9 @@ export default {
       }
     },
     showMedicineList: function() {
+      if (this.timerange === "") {
+        this.$store.commit("setFilteredDataShownToFalse");
+      }
       this.$store.commit("setIsActive");
     },
     sortMedicineListByNameAscendingly: function() {
@@ -281,16 +286,17 @@ export default {
       this.$store.commit("setShowExpiredMedicineOnly");
     },
     filterResults: function() {
-      this.$store.commit("setIsActive");
-      this.$store.commit("setFilteredDataShown");
-      const beginningDate = this.timerange[0].getTime();
-      const endDate = this.timerange[1].getTime();
-      const filteredElements = this.getMedicineList.filter(element => {
+      this.$store.commit("setIsActiveToFalse");
+      this.$store.commit("setFilteredDataShownToTrue");
+      const beginningDate = this.timerange[0];
+      const endDate = this.timerange[1];
+      const filteredElements = [];
+      this.getMedicineList.forEach(element => {
         if (
-          new Date(element.date).getTime() > beginningDate &&
-          new Date(element.date).getTime() < endDate
+          new Date(element.date).getTime() > beginningDate.getTime() &&
+          new Date(element.date).getTime() < endDate.getTime()
         ) {
-          return element;
+          filteredElements.push(element);
         }
       });
       return filteredElements;
