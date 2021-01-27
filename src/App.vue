@@ -41,7 +41,7 @@
         </medicine-carts>
       </section>
       <div class="block">
-        <div style="margin-top: 50px">
+        <div style="color: white; margin-top: 50px">
           Select date range:
         </div>
         <el-date-picker
