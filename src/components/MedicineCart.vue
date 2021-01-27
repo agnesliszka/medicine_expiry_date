@@ -6,44 +6,39 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 export default {
-  name: "medicine-carts",
+  name: 'medicine-carts',
   props: ["medicine", "isMedicineExpired"],
   computed: {
-    ...mapGetters(["getMedicineList"])
-  },
+        ...mapGetters([
+            'getMedicineList',
+        ])
+    },
   methods: {
-    deleteMedicine: function(medicine) {
+  deleteMedicine: function(medicine) {
       const index = this.getMedicineList.indexOf(medicine);
-      const idx = this.getMedicineList[index].id;
-      axios
-        .delete(
-          `https://medicineexpirydateproject.firebaseio.com/medicineList/${idx}` +
-            ".json?auth=" +
-            "2pc6k4A0Tv5DR80pYc9enh0fTOBBewNAKfRcZD1N"
-        )
-        .then(res => {
-          console.log(res);
-          this.getMedicineList.splice(index, 1);
-        })
-        .catch(err => console.log(err));
-      //
-    }
+      const idx = this.getMedicineList[index].id
+      axios.delete(`https://medicineexpirydateproject.firebaseio.com/medicineList/${idx}`+'.json?auth='+'2pc6k4A0Tv5DR80pYc9enh0fTOBBewNAKfRcZD1N')
+        .then(res => window.location.reload())
+        .catch(err => console.log(err))
+      // this.getMedicineList.splice(index, 1);
+   },
   }
-};
+}
 </script>
 <style>
-.delete {
-  cursor: pointer;
-}
+  .delete {
+    cursor: pointer;
+  }
 
-.delete:hover {
-  color: #999999;
-}
-
-.expired {
-  background-color: red;
-}
+  .delete:hover {
+    color: #999999;
+  }
+  
+  .expired {
+    background-color: red;
+  }
 </style>
+
