@@ -72,7 +72,11 @@ export default {
         expiryDate.length === 10 &&
         medicine.trim() !== ""
       ) {
-        // this.getMedicineList.push({name: medicine, date: expiryDate, expired: isExpired});
+        this.getMedicineList.push({
+          name: medicine,
+          date: expiryDate,
+          expired: isExpired
+        });
         const medicineDetails = {
           name: medicine,
           date: expiryDate,
@@ -85,7 +89,7 @@ export default {
           )
           .then(res => {
             console.log(res);
-            window.location.reload();
+            // window.location.reload();
           })
           .catch(err => console.log(err));
         this.isMedicineExpired(expiryDate);
