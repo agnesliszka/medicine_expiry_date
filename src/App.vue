@@ -41,7 +41,7 @@
         </medicine-carts>
       </section>
       <div class="block">
-        <div :style="{ color: getBaseColor }" style="margin-top: 50px">
+        <div style="margin-top: 50px">
           Select date range:
         </div>
         <el-date-picker
@@ -134,11 +134,11 @@ export default {
   name: "app",
   components: {
     "medicine-cart": MedicineCart,
-    "medicine-carts": MedicineCarts,
+    "medicine-carts": MedicineCarts
   },
   data() {
     return {
-      timerange: "",
+      timerange: ""
     };
   },
   mounted() {
@@ -147,7 +147,7 @@ export default {
   created() {
     axios
       .get("https://medicineexpirydateproject.firebaseio.com/medicineList.json")
-      .then((res) => {
+      .then(res => {
         console.log(res);
         const data = res.data;
         const medicineList = [];
@@ -158,7 +158,7 @@ export default {
         }
         this.setMedicineList(medicineList);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   },
   computed: {
     ...mapGetters([
@@ -171,7 +171,7 @@ export default {
       "getSortedByNameAscendigly",
       "getSortedByDateAscendigly",
       "getCurrentDate",
-      "getBaseColor",
+      "getBaseColor"
     ]),
     baseColor: {
       get() {
@@ -179,28 +179,28 @@ export default {
       },
       set(baseColor) {
         this.$store.dispatch("updateBaseColor", baseColor);
-      },
+      }
     },
-    getNameButtonText: function () {
+    getNameButtonText: function() {
       return this.getSortedByNameAscendigly
         ? "Sort by name ascendingly"
         : "Sort by name descendingly";
     },
-    getDateButtonText: function () {
+    getDateButtonText: function() {
       return this.getSortedByDateAscendigly
         ? "Sort by date ascendingly"
         : "Sort by date descendingly";
     },
-    getButtonText: function () {
+    getButtonText: function() {
       return this.getShowExpiredMedicineOnly
         ? "Show all medicines"
         : "Show expired medicine only";
     },
-    expiredMedicineList: function () {
-      return this.getMedicineList.filter(function (medicine) {
+    expiredMedicineList: function() {
+      return this.getMedicineList.filter(function(medicine) {
         return medicine.expired;
       });
-    },
+    }
   },
   methods: {
     ...mapMutations([
@@ -211,9 +211,9 @@ export default {
       "setSortedByDateAscendigly",
       "setShowExpiredMedicineOnly",
       "updateBaseColor",
-      "setCurrentDate",
+      "setCurrentDate"
     ]),
-    isMedicineExpired: function (expiryDate) {
+    isMedicineExpired: function(expiryDate) {
       let today = new Date();
       today.setHours(0, 0, 0, 0);
       today = today.getTime();
@@ -226,10 +226,10 @@ export default {
         return false;
       }
     },
-    showMedicineList: function () {
+    showMedicineList: function() {
       this.$store.commit("setIsActive");
     },
-    sortMedicineListByNameAscendingly: function () {
+    sortMedicineListByNameAscendingly: function() {
       function compare(a, b) {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
@@ -237,7 +237,7 @@ export default {
       }
       return this.getMedicineList.sort(compare);
     },
-    sortMedicineListByNameDescendingly: function () {
+    sortMedicineListByNameDescendingly: function() {
       function compare(a, b) {
         if (a.name < b.name) return 1;
         if (a.name > b.name) return -1;
@@ -245,7 +245,7 @@ export default {
       }
       return this.getMedicineList.sort(compare);
     },
-    sortMedicineListByDateAscendingly: function () {
+    sortMedicineListByDateAscendingly: function() {
       function compare(a, b) {
         if (a.date < b.date) return -1;
         if (a.date > b.date) return 1;
@@ -253,7 +253,7 @@ export default {
       }
       return this.getMedicineList.sort(compare);
     },
-    sortMedicineListByDateDescendingly: function () {
+    sortMedicineListByDateDescendingly: function() {
       function compare(a, b) {
         if (a.date < b.date) return 1;
         if (a.date > b.date) return -1;
@@ -261,7 +261,7 @@ export default {
       }
       return this.getMedicineList.sort(compare);
     },
-    changeSortedByNameFlag: function () {
+    changeSortedByNameFlag: function() {
       if (this.getSortedByNameAscendigly) {
         this.sortMedicineListByNameAscendingly();
       } else if (!this.getSortedByNameAscendigly) {
@@ -269,7 +269,7 @@ export default {
       }
       this.$store.commit("setSortedByNameAscendigly");
     },
-    changeSortedByDateFlag: function () {
+    changeSortedByDateFlag: function() {
       if (this.getSortedByDateAscendigly) {
         this.sortMedicineListByDateAscendingly();
       } else if (!this.getSortedByDateAscendigly) {
@@ -277,15 +277,15 @@ export default {
       }
       this.$store.commit("setSortedByDateAscendigly");
     },
-    showExpiredMedicineOnly: function () {
+    showExpiredMedicineOnly: function() {
       this.$store.commit("setShowExpiredMedicineOnly");
     },
-    filterResults: function () {
+    filterResults: function() {
       this.$store.commit("setIsActive");
       this.$store.commit("setFilteredDataShown");
       const beginningDate = this.timerange[0].getTime();
       const endDate = this.timerange[1].getTime();
-      const filteredElements = this.getMedicineList.filter((element) => {
+      const filteredElements = this.getMedicineList.filter(element => {
         if (
           new Date(element.date).getTime() > beginningDate &&
           new Date(element.date).getTime() < endDate
@@ -294,8 +294,8 @@ export default {
         }
       });
       return filteredElements;
-    },
-  },
+    }
+  }
 };
 </script>
 

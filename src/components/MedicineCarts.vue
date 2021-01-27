@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent class="row justify-content-center">
+    <section>
     <input
       ref="input"
       type="text"
@@ -18,6 +19,8 @@
     <p class="validation" v-else-if="getMedicineNameInput.length < 3">
       You need to input at least three characters.
     </p>
+    </section>
+    <section>
     <input
       ref="input"
       type="date"
@@ -29,6 +32,7 @@
     <p class="validation" v-if="getMedicineExpiryDateInput === ''">
       Please input a valid date.
     </p>
+    </section>
     <button
       type="submit"
       v-if="
@@ -54,12 +58,12 @@ export default {
     ...mapGetters([
       "getMedicineNameInput",
       "getMedicineExpiryDateInput",
-      "getMedicineList",
-    ]),
+      "getMedicineList"
+    ])
   },
   methods: {
     ...mapMutations(["clearMedicineInput", "clearMedicineExpiryDateInput"]),
-    addMedicine: function () {
+    addMedicine: function() {
       const medicine = this.getMedicineNameInput;
       const expiryDate = this.getMedicineExpiryDateInput;
       const isExpired = this.isMedicineExpired(expiryDate);
@@ -72,29 +76,33 @@ export default {
         const medicineDetails = {
           name: medicine,
           date: expiryDate,
-          expired: isExpired,
+          expired: isExpired
         };
         axios
           .post(
             "https://medicineexpirydateproject.firebaseio.com/medicineList.json",
             medicineDetails
           )
-          .then((res) => {
+          .then(res => {
             console.log(res);
             window.location.reload();
           })
-          .catch((err) => console.log(err));
+          .catch(err => console.log(err));
         this.isMedicineExpired(expiryDate);
         this.clearMedicineInput;
         this.clearMedicineExpiryDateInput;
         this.$refs.input.blur();
       } else return;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
 .justify-content-center {
   height: 50px;
+}
+section {
+  display: flex;
+  flex-direction: column;
 }
 </style>
