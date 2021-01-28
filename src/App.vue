@@ -20,7 +20,7 @@
             class="btn btn-danger"
           >
             <span v-if="getIsActive">Hide Medicine List</span>
-            <span v-if="!getIsActive">Show Medicine List</span>
+            <span v-if="!getIsActive">Show All Medicine List</span>
           </button>
           <button @click="changeSortedByNameFlag" class="btn btn-dark">
             {{ getNameButtonText }}
@@ -51,7 +51,7 @@
           type="daterange"
           start-placeholder="Start date"
           end-placeholder="End date"
-        >
+          :default-time="['00:00:00', '23:59:59']">
         </el-date-picker>
       </div>
       <section
@@ -229,9 +229,7 @@ export default {
       }
     },
     showMedicineList: function() {
-      if (this.timerange === "") {
-        this.$store.commit("setFilteredDataShownToFalse");
-      }
+      this.$store.commit("setFilteredDataShownToFalse");
       this.$store.commit("setIsActive");
     },
     sortMedicineListByNameAscendingly: function() {
