@@ -9,6 +9,10 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
+  "engines": {
+    "node": "8.x",
+    "npm": "5.x"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap-vue": "^2.0.0-rc.11",
