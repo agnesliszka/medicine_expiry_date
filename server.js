@@ -1,20 +1,11 @@
-var express = require("express");
-var app = express();
-var path = require("path");
+const express = require("express");
+const port = process.env.PORT || 8080;
+const app = express();
 
-app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/json", function(req, res) {
-  console.log("GET the json");
-  res.status(200).json({ jsonData: true });
+app.use(express.static(__dirname + "/dist/"));
+app.get(/.*/, function(req, res) {
+  res.sendfile(__dirname + "/dist/index.html");
 });
+app.listen(port);
 
-app.get("/file", function(req, res) {
-  console.log("GET the file");
-  res.status(200).sendFile(path.join(__dirname, "app.js"));
-});
-
-var server = app.listen(process.env.PORT || 5000, function() {
-  var port = server.address().port;
-  console.log("Express is working on port " + port);
-});
+console.log("Server started...");
